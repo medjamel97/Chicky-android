@@ -12,7 +12,7 @@ class SplashActivity : Activity() {
 
         installSplashScreen()
 
-        val intent = Intent(this@SplashActivity, MainActivity::class.java)
+        val intent = Intent(this@SplashActivity, RegisterActivity::class.java)
         startActivity(intent)
         finish()
     }
