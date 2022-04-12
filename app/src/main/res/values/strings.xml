@@ -20,4 +20,8 @@
     <string name="todo">TODO</string>
     <string name="description">Description</string>
     <string name="title">Title</string>
+    <string name="type_the_title">Type the title</string>
+    <string name="add_post">Add post</string>
+    <string name="choose_a_video">Choose a video</string>
+    <string name="profile">Profile</string>
 </resources>

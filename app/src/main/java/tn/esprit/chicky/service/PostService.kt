@@ -2,13 +2,9 @@ package tn.esprit.chicky.service
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
+import retrofit2.http.*
 import tn.esprit.chicky.models.Post
-import org.jetbrains.annotations.NotNull
-import retrofit2.http.Body
-import retrofit2.http.POST
+
 
 interface PostService {
 
@@ -22,11 +18,20 @@ interface PostService {
         val post: Post
     )
 
+    data class MessageResponse(
+        @SerializedName("message")
+        val message: String
+    )
+
     data class PostBody(val title: String, val description: String)
+
+    @GET("/post")
+    fun getPosts(): Call<PostsResponse>
 
     @POST("/post")
     fun addPost(@Body postBody: PostBody): Call<PostResponse>
 
-    @GET("/post")
-    fun getPosts(): Call<PostsResponse>
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/post", hasBody = true)
+    fun deletePost(@Field("_id") _id: String?): Call<MessageResponse?>?
 }

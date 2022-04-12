@@ -37,8 +37,7 @@ class RegisterActivity : AppCompatActivity() {
                     mdpid!!.text.toString(),
                     usernameid!!.text.toString()
                 )
-            )
-                .enqueue(
+            ).enqueue(
                     object : Callback<UserService.UserResponse> {
                         override fun onResponse(
                             call: Call<UserService.UserResponse>,

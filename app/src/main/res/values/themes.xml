@@ -19,4 +19,17 @@
         <item name="android:navigationBarColor">@android:color/white</item>
         <!-- End of customization. -->
     </style>
+
+    <style name="Theme.Chicky.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/accent_color</item>
+        <item name="colorPrimaryVariant">@color/accent_color_variant</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent_color_dark</item>
+        <item name="colorSecondaryVariant">@color/accent_color_variant_dark</item>
+        <item name="colorOnSecondary">@color/dark</item>
+        <item name="android:statusBarColor" tools:targetApi="l">#F6F6F6</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+    </style>
 </resources>
