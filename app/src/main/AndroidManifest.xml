@@ -15,10 +15,7 @@
         android:theme="@style/Theme.Chicky"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.activities.LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.activities.RegisterActivity"
+            android:name=".ui.activities.forgetpassword"
             android:exported="true" />
         <activity
             android:name=".ui.activities.SplashActivity"

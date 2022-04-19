@@ -17,8 +17,9 @@ import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.PostService
 import tn.esprit.chicky.ui.fragments.*
 import tn.esprit.curriculumvitaev2medjameleddinebouassida.adapters.PostAdapter
-
+const val USERNAME_SHARED = "USERNAME"
 class MainActivity : AppCompatActivity() {
+
 
     var bottomNavigation: BottomNavigationView? = null
 
