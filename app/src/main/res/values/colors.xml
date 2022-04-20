@@ -9,6 +9,7 @@
 
     <!-- STATIC COLORS -->
     <color name="white">#FFFFFF</color>
+    <color name="white_alpha_90">#E6FFFFFF</color>
     <color name="dark">#202832</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

@@ -78,7 +78,7 @@
             android:id="@+id/mdpid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type a strong password" />
+            android:hint="Type your password" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -86,7 +86,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#15598F"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Sign In"
         android:textColor="#EFECEC"
         android:textStyle="bold"
@@ -120,7 +120,7 @@
         android:background="@color/transparent"
         android:backgroundTint="#FFFFFF"
         android:text="Sign up"
-        android:textColor="#1A5381"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -154,8 +154,8 @@
         android:layout_marginEnd="15dp"
         android:fontFamily="sans-serif-light"
         android:text="@string/login"
-        android:textSize="50sp"
         android:textColor="@color/backgroundClear"
+        android:textSize="45sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
