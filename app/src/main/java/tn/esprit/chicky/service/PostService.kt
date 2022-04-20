@@ -4,6 +4,13 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.*
 import tn.esprit.chicky.models.Post
+import okhttp3.RequestBody
+
+import okhttp3.MultipartBody
+
+import retrofit2.http.POST
+
+import retrofit2.http.Multipart
 
 
 interface PostService {
@@ -25,11 +32,15 @@ interface PostService {
 
     data class PostBody(val title: String, val description: String)
 
+    @Multipart
+    @POST("/post")
+    fun addPost(
+        @Part file: MultipartBody.Part?,
+        @Part("filename") name: RequestBody?
+    ): Call<PostResponse>?
+
     @GET("/post")
     fun getPosts(): Call<PostsResponse>
-
-    @POST("/post")
-    fun addPost(@Body postBody: PostBody): Call<PostResponse>
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/post", hasBody = true)

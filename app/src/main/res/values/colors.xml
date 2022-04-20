@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="accent_color">#0a7dca</color>
-    <color name="accent_color_variant">#0967A6</color>
-    <color name="accent_color_dark">#0a7dca</color>
-    <color name="accent_color_variant_dark">#0967A6</color>
-    <color name="dark">#20212e</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="background">#F4F7FB</color>
-    <color name="secondaryBackground">#FFFFFFFF</color>
+    <!-- DARK/LIGHT COLORS -->
+    <color name="colorPrimary">#0a7dca</color>
+    <color name="colorAccent">#0a7dca</color>
+    <color name="textPrimary">#000000</color>
+    <color name="background">#F2F2F2</color>
+    <color name="backgroundClear">#FFFFFF</color>
+
+    <!-- STATIC COLORS -->
+    <color name="white">#FFFFFF</color>
+    <color name="dark">#202832</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

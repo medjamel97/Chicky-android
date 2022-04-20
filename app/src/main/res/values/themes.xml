@@ -1,35 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Chicky" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/accent_color</item>
-        <item name="colorPrimaryVariant">@color/accent_color_variant</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/accent_color_dark</item>
-        <item name="colorSecondaryVariant">@color/accent_color_variant_dark</item>
-        <item name="colorOnSecondary">@color/dark</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
-        <!-- Customize your theme here. -->
-        <!-- Navigation bar color. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <!-- required to contrast the dark buttons -->
-        <item name="android:navigationBarColor">@android:color/white</item>
-        <!-- End of customization. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/backgroundClear</item>
     </style>
 
-    <style name="Theme.Chicky.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/accent_color</item>
-        <item name="colorPrimaryVariant">@color/accent_color_variant</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/accent_color_dark</item>
-        <item name="colorSecondaryVariant">@color/accent_color_variant_dark</item>
-        <item name="colorOnSecondary">@color/dark</item>
-        <item name="android:statusBarColor" tools:targetApi="l">#F6F6F6</item>
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:navigationBarColor">@color/backgroundClear</item>
     </style>
 </resources>

@@ -6,5 +6,13 @@
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_person"
         android:title="@string/profile"
+        android:iconTint="@color/white"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
+        android:iconTint="@color/white"
+        app:showAsAction="ifRoom" />
 </menu>

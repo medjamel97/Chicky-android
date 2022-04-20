@@ -14,11 +14,16 @@ object ApiService {
             .build()
     }
 
+    val userService: UserService by lazy {
+        retrofit().create(UserService::class.java)
+    }
+
     val postService: PostService by lazy {
         retrofit().create(PostService::class.java)
     }
 
-    val userService: UserService by lazy {
-        retrofit().create(UserService::class.java)
+    val conversationService: ConversationService by lazy {
+        retrofit().create(ConversationService::class.java)
     }
+
 }

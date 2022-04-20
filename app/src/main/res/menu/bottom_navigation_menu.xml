@@ -9,11 +9,11 @@
         android:enabled="true"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
+
     <item
-        android:id="@+id/create_page"
-        android:enabled="true"
-        android:icon="@drawable/ic_add"
-        android:title="@string/create" />
+        android:id="@+id/placeholder"
+        android:title="" />
+
     <item
         android:id="@+id/chat_page"
         android:enabled="true"
