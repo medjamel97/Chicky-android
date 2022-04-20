@@ -19,6 +19,9 @@ class LoginActivity : AppCompatActivity() {
     var emailid: TextInputEditText? = null
     var mdpid: TextInputEditText? = null
     var btncnx: Button? = null
+    var btnforgetpassword: Button? = null
+    var btnsignup: Button? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,8 @@ class LoginActivity : AppCompatActivity() {
         emailid = findViewById(R.id.emailid)
         mdpid = findViewById(R.id.mdpid)
         btncnx = findViewById(R.id.btncnx)
+        btnforgetpassword = findViewById(R.id.btnforgetpassword)
+        btnsignup = findViewById(R.id.btnsignup)
 
         btncnx!!.setOnClickListener {
             ApiService.userService.login(
@@ -58,6 +63,17 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 )
+        }
+        btnsignup!!.setOnClickListener{
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btnforgetpassword!!.setOnClickListener{
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }

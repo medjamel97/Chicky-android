@@ -4,8 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,9 +21,18 @@ class RegisterActivity : AppCompatActivity() {
     var usernameid: TextInputEditText? = null
     var emailid: TextInputEditText? = null
     var mdpid: TextInputEditText? = null
+
+    private var usernamelayout: TextInputLayout? = null
+    private var emaillayout: TextInputLayout? = null
+    private var mdplayout: TextInputLayout? = null
+
+
+    //var mdpid: TextInputEditText? = null
     var btncnx: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+      //  usernamelayout = findViewById(R.id.username)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
@@ -29,6 +40,34 @@ class RegisterActivity : AppCompatActivity() {
         emailid = findViewById(R.id.emailid)
         mdpid = findViewById(R.id.mdpid)
         btncnx = findViewById(R.id.btncnx)
+
+
+        /*
+        if (usernameid?.text!!.isEmpty()) {
+            usernamelayout!!.error = getString(R.string.mustNotBeEmpty)
+            return false
+        }
+
+        if (txtFullName?.length()!! < 3) {
+            txtLayoutFullName!!.error = getString(R.string.mustBeAtLeast3)
+            return false
+        }
+
+        if (txtEmail?.text!!.isEmpty()) {
+            usernamelayout!!.error = getString(R.string.mustNotBeEmpty)
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(txtEmail?.text!!).matches()) {
+            txtLayoutEmail!!.error = getString(R.string.checkYourEmail)
+            return false
+        }
+
+        if (txtAge?.text!!.isEmpty()) {
+            txtLayoutAge!!.error = getString(R.string.mustNotBeEmpty)
+            return false
+        }
+*/
 
         btncnx!!.setOnClickListener {
             ApiService.userService.register(

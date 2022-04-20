@@ -11,6 +11,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import tn.esprit.chicky.R
 import tn.esprit.chicky.ui.fragments.*
 
+const val USERNAME_SHARED = "USERNAME"
+
 class MainActivity : AppCompatActivity() {
 
     private var bottomNavigation: BottomNavigationView? = null
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottom_navigation)
 
 
-        fab!!.setOnClickListener{
+        fab!!.setOnClickListener {
             val intent = Intent(this@MainActivity, CreateActivity::class.java)
             startActivity(intent)
         }

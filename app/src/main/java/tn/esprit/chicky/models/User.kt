@@ -1,4 +1,5 @@
 package tn.esprit.chicky.models
+
 import java.util.*
 
 data class User(
@@ -14,8 +15,6 @@ data class User(
     val bio: String,
 
     val birthdate: Date,
-
-
 
 
     )
