@@ -18,6 +18,5 @@
         <!-- required to contrast the dark buttons -->
         <item name="android:navigationBarColor">@android:color/white</item>
         <!-- End of customization. -->
-
     </style>
 </resources>
