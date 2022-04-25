@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import tn.esprit.chicky.R
 
+import com.mapbox.maps.MapView
+import com.mapbox.maps.Style
+
+var mapView: MapView? = null
 class SocialFragment : Fragment() {
 
     override fun onCreateView(
@@ -16,6 +20,8 @@ class SocialFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_social, container, false)
 
         // TODO
+        mapView = view.findViewById(R.id.mapView)
+        mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
         return view
     }
