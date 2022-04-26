@@ -5,17 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.VideoView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import tn.esprit.chicky.models.Post
 import tn.esprit.chicky.R
+import tn.esprit.chicky.models.Post
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.PostService
-import android.widget.VideoView
 
 class PostAdapter(var items: MutableList<Post>) :
 
@@ -42,13 +43,13 @@ class PostAdapter(var items: MutableList<Post>) :
         private val reportButton: TextView = itemView.findViewById(R.id.reportButton)
         private val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
 
-        fun bindView(item: Post) {
+        fun bindView(post: Post) {
 
             itemView.setOnClickListener {
 
             }
 
-            videoView.setVideoURI(Uri.parse("http://10.0.2.2:5000/vid/bmw.mp4"))
+            videoView.setVideoURI(Uri.parse("http://10.0.2.2:5000/vid/${post.videoFilename}"))
             videoView.setOnPreparedListener { mp ->
                 progressBar.visibility = View.GONE
                 mp.start()
@@ -63,11 +64,11 @@ class PostAdapter(var items: MutableList<Post>) :
             }
             videoView.setOnCompletionListener { mp -> mp.start() }
 
-            postTitleTV.text = item.title
-            postDescriptionTV.text = item.description
+            postTitleTV.text = post.title
+            postDescriptionTV.text = post.description
 
             deleteButton.setOnClickListener {
-                ApiService.postService.deletePost(item._id)?.enqueue(
+                ApiService.postService.deletePost(post._id)?.enqueue(
                     object : Callback<PostService.MessageResponse?> {
                         override fun onResponse(
                             call: Call<PostService.MessageResponse?>,
@@ -77,7 +78,7 @@ class PostAdapter(var items: MutableList<Post>) :
                                 Snackbar.make(itemView, "Post Deleted", Snackbar.LENGTH_SHORT)
                                     .show()
                             } else {
-                                Log.d("BODY", "id code is " + item._id)
+                                Log.d("BODY", "id code is " + post._id)
                                 Log.d("HTTP ERROR", "status code is " + response.code())
                             }
                         }

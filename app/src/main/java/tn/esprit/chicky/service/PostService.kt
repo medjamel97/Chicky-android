@@ -35,9 +35,11 @@ interface PostService {
     @Multipart
     @POST("/post")
     fun addPost(
-        @Part file: MultipartBody.Part?,
-        @Part("filename") name: RequestBody?
-    ): Call<PostResponse>?
+        @Part file: MultipartBody.Part,
+        @Part title: MultipartBody.Part,
+        @Part desctiption: MultipartBody.Part,
+        @Part("filename") name: RequestBody
+    ): Call<PostResponse>
 
     @GET("/post")
     fun getPosts(): Call<PostsResponse>

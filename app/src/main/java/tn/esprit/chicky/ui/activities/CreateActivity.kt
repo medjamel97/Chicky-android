@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
@@ -18,23 +17,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.PostService
-import java.io.*
+import tn.esprit.chicky.utils.URIPathHelper
+import java.io.File
 import java.util.*
 
 class CreateActivity : AppCompatActivity() {
-
-    private val IMAGE_DIRECTORY = "/uploads"
 
     private var postIV: ImageView? = null
     private var titelTI: TextInputEditText? = null
@@ -42,7 +41,7 @@ class CreateActivity : AppCompatActivity() {
     private var addPostBtn: Button? = null
     private var chooseVideoButton: FloatingActionButton? = null
 
-    private var videoPath: String? = null
+    private var videoUri: Uri? = null
 
     companion object {
         const val GALLERY_RESULT = 2
@@ -72,8 +71,49 @@ class CreateActivity : AppCompatActivity() {
         }
 
         addPostBtn!!.setOnClickListener {
-            uploadVideo()
+            addPost()
         }
+    }
+
+
+    private fun addPost() {
+        val pathFromUri = videoUri?.let { URIPathHelper().getPath(this, it) }
+
+        val sourceFile = File(pathFromUri!!)
+
+        val pdfname: String =
+            java.lang.String.valueOf(Calendar.getInstance().timeInMillis)
+
+        val requestBody: RequestBody = sourceFile.asRequestBody("*/*".toMediaTypeOrNull())
+        val fileToUpload = MultipartBody.Part
+            .createFormData("video", sourceFile.name, requestBody)
+        val titleData = MultipartBody.Part.createFormData("title", titelTI?.text.toString())
+        val descriptionData = MultipartBody.Part.createFormData("description", descriptionTI?.text.toString())
+        val filename: RequestBody = pdfname.toRequestBody("text/plain".toMediaTypeOrNull())
+
+        ApiService.postService.addPost(fileToUpload, titleData, descriptionData, filename)
+            .enqueue(
+                object : Callback<PostService.PostResponse?> {
+                    override fun onResponse(
+                        call: Call<PostService.PostResponse?>,
+                        response: Response<PostService.PostResponse?>
+                    ) {
+                        if (response.code() == 200) {
+                            finish()
+                        } else {
+                            Log.d("HTTP ERROR", "status code is " + response.code())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<PostService.PostResponse?>,
+                        t: Throwable
+                    ) {
+                        Log.d("FAIL", "fail")
+                    }
+
+                }
+            )
     }
 
     private fun openSystemGalleryToSelectAVideo() {
@@ -93,133 +133,28 @@ class CreateActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_RESULT) {
-            val videoUri = data?.data ?: return
-            val bitmap = getVideoThumbnail(baseContext, videoUri, 500, 500)
+            videoUri = data?.data ?: return
+            val bitmap = getVideoThumbnail(baseContext, videoUri!!)
 
             postIV?.setImageBitmap(bitmap)
             postIV?.scaleType = ImageView.ScaleType.CENTER_CROP
 
-            videoPath = getFilePathFromURI(videoUri)
-            Log.d("Path is", videoPath!!)
+            //videoPath = getFilePathFromURI(videoUri)
+            //Log.d("Path is", videoPath!!)
         }
 
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun getFilePathFromURI(contentUri: Uri?): String {
-        var copyFile: File? = null
-        baseContext?.let {
-            if (contentUri != null) {
-                copyFile = savefile(contentUri)
-            }
-        }
-        Log.d("vPath--->", copyFile!!.absolutePath)
-        return copyFile!!.absolutePath
-    }
-
-    private fun savefile(sourceuri: Uri): File {
-        val sourceFilename: String? = sourceuri.path
-        val destinationFilename =
-            Environment.getExternalStorageDirectory().path + File.separatorChar.toString() + "abc.mp4"
-        var bis: BufferedInputStream? = null
-        var bos: BufferedOutputStream? = null
-        try {
-            bis = BufferedInputStream(FileInputStream(sourceFilename))
-            bos = BufferedOutputStream(FileOutputStream(destinationFilename, false))
-            val buf = ByteArray(1024)
-            bis.read(buf)
-            do {
-                bos.write(buf)
-            } while (bis.read(buf) !== -1)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                bis?.close()
-                bos?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        return File(destinationFilename)
-    }
-
-    @Throws(Exception::class, IOException::class)
-    fun copystream(input: InputStream?, output: OutputStream?): Int {
-        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-        val `in` = BufferedInputStream(input, DEFAULT_BUFFER_SIZE)
-        val out = BufferedOutputStream(output, DEFAULT_BUFFER_SIZE)
-        var count = 0
-        var n = 0
-        try {
-            while (`in`.read(buffer, 0, DEFAULT_BUFFER_SIZE).also { n = it } != -1) {
-                out.write(buffer, 0, n)
-                count += n
-            }
-            out.flush()
-        } finally {
-            try {
-                out.close()
-            } catch (e: IOException) {
-                Log.e(e.message, e.toString())
-            }
-            try {
-                `in`.close()
-            } catch (e: IOException) {
-                Log.e(e.message, e.toString())
-            }
-        }
-        return count
-    }
-
-    private fun uploadVideo() {
-        val file = File(videoPath!!.toString())
-        val requestBody = RequestBody.create(MediaType.parse("*/*"), file)
-        val fileToUpload = MultipartBody.Part.createFormData("video", file.name, requestBody)
-        val filename = RequestBody.create(MediaType.parse("text/plain"), "pdfname")
-        Log.d("HEYYY", file.absolutePath)
-        ApiService.postService.addPost(
-            /*PostService.PostBody(
-                titelTI!!.text.toString(),
-                descriptionTI!!.text.toString()
-            ),*/ fileToUpload, filename
-        )?.enqueue(
-            object : Callback<PostService.PostResponse> {
-                override fun onResponse(
-                    call: Call<PostService.PostResponse>,
-                    response: Response<PostService.PostResponse>
-                ) {
-                    if (response.code() == 200) {
-                        Toast.makeText(baseContext, "Post added", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Log.d("HTTP ERROR", "status code is " + response.code())
-                    }
-                }
-
-                override fun onFailure(
-                    call: Call<PostService.PostResponse>,
-                    t: Throwable
-                ) {
-                    Log.d("FAIL", "fail")
-                }
-            }
-        )
-    }
-
-    private fun getVideoThumbnail(
-        context: Context,
-        videoUri: Uri,
-        imageWidth: Int,
-        imageHeight: Int
-    ): Bitmap? {
+    private fun getVideoThumbnail(context: Context, videoUri: Uri): Bitmap? {
         var bitmap: Bitmap? = null
         val mMMR = MediaMetadataRetriever()
         mMMR.setDataSource(context, videoUri)
         bitmap = mMMR.getScaledFrameAtTime(
             -1,
             MediaMetadataRetriever.OPTION_CLOSEST_SYNC,
-            imageWidth,
-            imageHeight
+            500,
+            500
         )
 
         return bitmap

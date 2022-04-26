@@ -5,5 +5,5 @@ data class Post(
     val title: String,
     val description: String,
     val videoFilename: String,
-    val user: User
+    val user: User?
 )

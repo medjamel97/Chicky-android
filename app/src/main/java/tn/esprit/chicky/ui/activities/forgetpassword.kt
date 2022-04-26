@@ -26,7 +26,7 @@ class forgetpassword : AppCompatActivity() {
         btnemail!!.setOnClickListener{
 
             ApiService.userService.forgetpassword(
-                UserService.forgetbody(
+                UserService.ForgetBody(
                     "a@gmail.com"
                 )
             ).enqueue(
