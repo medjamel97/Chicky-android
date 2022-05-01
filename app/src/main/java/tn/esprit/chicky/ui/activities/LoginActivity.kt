@@ -1,18 +1,21 @@
 package tn.esprit.chicky.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
-import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.UserService
+import tn.esprit.chicky.utils.Constants
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,46 +37,54 @@ class LoginActivity : AppCompatActivity() {
         btnsignup = findViewById(R.id.btnsignup)
 
         btncnx!!.setOnClickListener {
-            ApiService.userService.login(
-                UserService.LoginBody(
-                    emailid!!.text.toString(),
-                    mdpid!!.text.toString()
-                )
-            )
-                .enqueue(
-                    object : Callback<UserService.UserResponse> {
-                        override fun onResponse(
-                            call: Call<UserService.UserResponse>,
-                            response: Response<UserService.UserResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                Log.d("HTTP ERROR", "status code is " + response.code())
-                            }
-                        }
-
-                        override fun onFailure(
-                            call: Call<UserService.UserResponse>,
-                            t: Throwable
-                        ) {
-                            Log.d("FAIL", "fail")
-                        }
-                    }
-                )
+            login()
         }
-        btnsignup!!.setOnClickListener{
+        btnsignup!!.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        btnforgetpassword!!.setOnClickListener{
+        btnforgetpassword!!.setOnClickListener {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
 
+    private fun login() {
+        ApiService.userService.login(
+            UserService.LoginBody(
+                emailid!!.text.toString(),
+                mdpid!!.text.toString()
+            )
+        ).enqueue(
+            object : Callback<UserService.UserResponse> {
+                override fun onResponse(
+                    call: Call<UserService.UserResponse>,
+                    response: Response<UserService.UserResponse>
+                ) {
+                    if (response.code() == 200) {
+                        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
+                        val sharedPreferencesEditor: SharedPreferences.Editor = sharedPreferences.edit()
+                        val json = Gson().toJson(response.body()!!.user)
+                        sharedPreferencesEditor.putString("USER_DATA", json)
+                        sharedPreferencesEditor.apply()
+
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Log.d("HTTP ERROR", "status code is " + response.code())
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<UserService.UserResponse>,
+                    t: Throwable
+                ) {
+                    Log.d("FAIL", "fail")
+                }
+            }
+        )
     }
 }

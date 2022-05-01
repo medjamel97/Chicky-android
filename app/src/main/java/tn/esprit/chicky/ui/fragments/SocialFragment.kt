@@ -1,17 +1,17 @@
 package tn.esprit.chicky.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import tn.esprit.chicky.R
-
+import androidx.fragment.app.Fragment
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
+import tn.esprit.chicky.R
 
-var mapView: MapView? = null
 class SocialFragment : Fragment() {
+
+    var mapView: MapView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -21,7 +21,7 @@ class ConversationAdapter(var items: MutableList<Conversation>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.element_conversation, parent, false)
+            .inflate(R.layout.single_chat, parent, false)
         return ConversationViewHolder(view)
     }
 

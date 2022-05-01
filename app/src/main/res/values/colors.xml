@@ -8,7 +8,9 @@
     <color name="backgroundClear">#FFFFFF</color>
 
     <!-- STATIC COLORS -->
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="gray">#B3B3B3</color>
     <color name="white_alpha_90">#E6FFFFFF</color>
     <color name="dark">#202832</color>
     <color name="transparent">#00FFFFFF</color>

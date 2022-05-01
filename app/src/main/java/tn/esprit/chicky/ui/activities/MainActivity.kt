@@ -1,5 +1,6 @@
 package tn.esprit.chicky.ui.activities
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -10,8 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import tn.esprit.chicky.R
 import tn.esprit.chicky.ui.fragments.*
-
-const val USERNAME_SHARED = "USERNAME"
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,9 +29,11 @@ class MainActivity : AppCompatActivity() {
 
         fab!!.setOnClickListener {
             val intent = Intent(this@MainActivity, CreateActivity::class.java)
-            startActivity(intent)
+            startActivity(
+                intent,
+                ActivityOptions.makeCustomAnimation(baseContext, R.anim.slide_in_up, R.anim.slide_out_up).toBundle()
+            )
         }
-
 
         bottomNavigation!!.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setFragment(PostsFragment())
+        setFragment(SearchFragment())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,7 +72,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_profile -> {
             val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-            startActivity(intent)
+            startActivity(
+                intent,
+                ActivityOptions.makeCustomAnimation(baseContext, R.anim.slide_in_up, R.anim.slide_out_up).toBundle()
+            )
             true
         }
         R.id.action_settings -> {

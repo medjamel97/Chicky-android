@@ -11,7 +11,7 @@
         android:id="@+id/imageView4"
         android:layout_width="0dp"
         android:layout_height="170dp"
-        android:alpha="0.6"
+        android:alpha="1"
         android:contentDescription="@string/todo"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,12 +45,12 @@
 
 
     <TextView
-        android:id="@+id/fullname"
+        android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:drawablePadding="20dp"
-        android:text="@string/fullname"
+        android:text="@string/fullName"
         app:drawableStartCompat="@drawable/ic_person"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
         app:drawableStartCompat="@drawable/ic_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fullname" />
+        app:layout_constraintTop_toBottomOf="@+id/fullName" />
 
     <Button
         android:id="@+id/btnlogout"
@@ -88,36 +88,45 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/backgroundClear"
-        android:text="@string/delete_my_account"
-        android:textColor="#9E3D3D"
+        android:text="@string/edit_profile"
+        android:textColor="#1A237E"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-    <GridView
-        android:id="@+id/postsGV"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="@color/white"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/email">
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/posts"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="30dp"
+            android:text="@string/posts"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/postsGV"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+
+        <GridView
+            android:id="@+id/postsGV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:numColumns="3"
+            android:orientation="horizontal" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

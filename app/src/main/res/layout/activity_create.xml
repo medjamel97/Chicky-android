@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="@string/type_the_title" />
+            android:hint="@string/title_hint" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +69,7 @@
             android:id="@+id/descriptionTI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/type_the_description" />
+            android:hint="@string/description_hint" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

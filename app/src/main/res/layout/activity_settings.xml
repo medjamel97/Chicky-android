@@ -7,7 +7,6 @@
     android:layout_margin="15dp"
     tools:context=".ui.activities.SettingsActivity">
 
-
     <TextView
         android:id="@+id/textView8"
         android:layout_width="match_parent"

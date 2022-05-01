@@ -2,16 +2,15 @@ package tn.esprit.chicky.service
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import tn.esprit.chicky.utils.Constants
+
 
 object ApiService {
-
-    private const val BASE_URL = "http://10.0.2.2:5000/"
-    //private const val BASE_URL = "http://192.168.43.37:5000/"
 
     private fun retrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .build()
     }
 
@@ -21,6 +20,10 @@ object ApiService {
 
     val postService: PostService by lazy {
         retrofit().create(PostService::class.java)
+    }
+
+    val musicService: MusicService by lazy {
+        retrofit().create(MusicService::class.java)
     }
 
     val conversationService: ConversationService by lazy {

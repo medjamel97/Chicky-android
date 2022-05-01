@@ -3,13 +3,12 @@ package tn.esprit.chicky.ui.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import tn.esprit.chicky.utils.Constants
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : Activity() {
-    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,27 +18,16 @@ class SplashActivity : Activity() {
     }
 
     private fun checkUser() {
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
+        val userData = sharedPreferences.getString("USER_DATA", null)
 
-
-        sharedPreferences = getSharedPreferences("DATA_USER", MODE_PRIVATE);
-        if (sharedPreferences.getString(USERNAME_SHARED, "")!! != "")  {
-            val mainIntent = Intent(this, LoginActivity::class.java)
-            startActivity(mainIntent)
-        }else {
-            val mainIntent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
+        val intent: Intent = if (userData != null) {
+            Intent(this@SplashActivity, MainActivity::class.java)
+        } else {
+            Intent(this@SplashActivity, LoginActivity::class.java)
         }
 
-
-
-       /* if (true) {
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            val intent = Intent(this@SplashActivity, RegisterActivity::class.java)
-            startActivity(intent)
-            finish()
-        }*/
+        startActivity(intent)
+        finish()
     }
 }

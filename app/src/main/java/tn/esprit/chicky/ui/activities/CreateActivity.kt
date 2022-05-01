@@ -75,7 +75,6 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
-
     private fun addPost() {
         val pathFromUri = videoUri?.let { URIPathHelper().getPath(this, it) }
 
@@ -135,28 +134,27 @@ class CreateActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_RESULT) {
             videoUri = data?.data ?: return
             val bitmap = getVideoThumbnail(baseContext, videoUri!!)
-
             postIV?.setImageBitmap(bitmap)
             postIV?.scaleType = ImageView.ScaleType.CENTER_CROP
-
-            //videoPath = getFilePathFromURI(videoUri)
-            //Log.d("Path is", videoPath!!)
         }
 
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun getVideoThumbnail(context: Context, videoUri: Uri): Bitmap? {
-        var bitmap: Bitmap? = null
         val mMMR = MediaMetadataRetriever()
         mMMR.setDataSource(context, videoUri)
-        bitmap = mMMR.getScaledFrameAtTime(
+
+        return mMMR.getScaledFrameAtTime(
             -1,
             MediaMetadataRetriever.OPTION_CLOSEST_SYNC,
             500,
             500
         )
+    }
 
-        return bitmap
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_out_down, R.anim.slide_in_down)
     }
 }

@@ -2,16 +2,16 @@ package tn.esprit.chicky.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
-import tn.esprit.chicky.adapters.PostAdapter
+import tn.esprit.chicky.adapters.FullPostAdapter
 import tn.esprit.chicky.models.Post
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.PostService
@@ -39,7 +39,7 @@ class PostsFragment : Fragment() {
                     ) {
                         if (response.code() == 200) {
                             viewPagerVideos!!.adapter =
-                                PostAdapter(response.body()?.posts as MutableList<Post>)
+                                FullPostAdapter(response.body()?.posts as MutableList<Post>)
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
                         }

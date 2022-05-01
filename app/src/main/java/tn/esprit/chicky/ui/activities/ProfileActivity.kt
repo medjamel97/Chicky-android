@@ -1,6 +1,7 @@
 package tn.esprit.chicky.ui.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -8,18 +9,19 @@ import android.widget.GridView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
-import tn.esprit.chicky.adapters.GridViewAdapter
-import tn.esprit.chicky.models.Post
+import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
-import tn.esprit.chicky.service.UserService
+import tn.esprit.chicky.service.PostService
+import tn.esprit.chicky.utils.Constants
 
 class ProfileActivity : AppCompatActivity() {
 
-    var fullname: TextView? = null
+    var fullName: TextView? = null
     var email: TextView? = null
     var btnlogout: Button? = null
     var btndelete: Button? = null
@@ -29,116 +31,81 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        fullname = findViewById(R.id.fullname)
+        fullName = findViewById(R.id.fullName)
         email = findViewById(R.id.email)
         btnlogout = findViewById(R.id.btnlogout)
         btndelete = findViewById(R.id.delete)
         postsGV = findViewById(R.id.postsGV)
 
-        postsGV!!.adapter = GridViewAdapter(
-            applicationContext,
-            listOf(
-                Post("post 1", "", "", "", null),
-                Post("post 1", "", "", "", null),
-                Post("post 1", "", "", "", null),
-            ) as MutableList<Post>
-        )
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
+        val userData = sharedPreferences.getString("USER_DATA", null)
 
-        ApiService.userService.getUser(
-            UserService.OneUserBody(
-                "6254e12d8c50dadefc269483"
-            )
-        ).enqueue(
-            object : Callback<UserService.UserResponse> {
-                override fun onResponse(
-                    call: Call<UserService.UserResponse>,
-                    response: Response<UserService.UserResponse>
-                ) {
-                    if (response.code() == 200) {
-                        Log.d("i reponse heyy", response.body()?.user?._id.toString())
-                        //    fullname!!.text = "@" + response.body()?.user?.username.toString()
-                        fullname!!.text = "@" + response.body()?.user?.username.toString()
-                        email!!.text = "@" + response.body()?.user?.email.toString()
-                    } else {
-                        Log.d("HTTP ERROR", "status code is " + response.code())
-                    }
-                }
-
-                override fun onFailure(
-                    call: Call<UserService.UserResponse>,
-                    t: Throwable
-                ) {
-                    Log.d("FAIL", "fail")
-                }
-            }
-        )
-
-
-
+        if (userData != null) {
+            val user: User = Gson().fromJson(userData, User::class.java)
+            fullName!!.text = user.firstname + " " + user.lastname
+            email!!.text = user.email
+        }
 
         btnlogout!!.setOnClickListener {
             val builder = AlertDialog.Builder(this)
-            builder.setTitle(getString(R.string.logoutTitle))
-            builder.setMessage(R.string.logoutMessage)
-            builder.setPositiveButton("Yes") { dialogInterface, which ->
-                val intent =
-                    Intent(this@ProfileActivity, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+            builder.setTitle(getString(R.string.logout))
+            builder.setMessage(R.string.logout_message)
+            builder.setPositiveButton("Yes") { _, _ ->
+                logout()
             }
             builder.setNegativeButton("No") { dialogInterface, which ->
                 dialogInterface.dismiss()
             }
             builder.create().show()
-
-
         }
+
         btndelete!!.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Delete")
-            builder.setMessage("You want to delete this account ? ")
-            builder.setPositiveButton("Yes") { dialogInterface, which ->
-                Log.d("west il yesssssssssssssssssssssss", "dakhleet fil consommation")
-                ApiService.userService.deleteUser(
-                    UserService.OneUserBody(
-                        "6254e20f74f4024c467dc35a"
-                    )
-                ).enqueue(
-                    object : Callback<UserService.UserResponse> {
-                        override fun onResponse(
-                            call: Call<UserService.UserResponse>,
-                            response: Response<UserService.UserResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                val intent =
-                                    Intent(this@ProfileActivity, LoginActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                Log.d("HTTP ERROR", "status code is " + response.code())
-                            }
-                        }
-
-                        override fun onFailure(
-                            call: Call<UserService.UserResponse>,
-                            t: Throwable
-                        ) {
-                            Log.d("FAIL", "fail")
-                        }
-                    }
-                )
-
-            }
-            builder.setNegativeButton("No") { dialogInterface, which ->
-                dialogInterface.dismiss()
-            }
-            builder.create().show()
-
 
         }
 
-
+        getMyPosts()
     }
 
+    private fun getMyPosts() {
+        ApiService.postService.getPosts()
+            .enqueue(
+                object : Callback<PostService.PostsResponse> {
+                    override fun onResponse(
+                        call: Call<PostService.PostsResponse>,
+                        response: Response<PostService.PostsResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            /*postsGV!!.adapter = `GridViewAdapter.old`(
+                                applicationContext,
+                                response.body()?.posts as MutableList<Post>
+                            )*/
+                        } else {
+                            Log.d("HTTP ERROR", "status code is " + response.code())
+                        }
+                    }
 
+                    override fun onFailure(
+                        call: Call<PostService.PostsResponse>,
+                        t: Throwable
+                    ) {
+                        Log.d("FAIL", "fail")
+                    }
+                }
+            )
+    }
+
+    private fun logout() {
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
+        val sharedPreferencesEditor: SharedPreferences.Editor = sharedPreferences.edit()
+        sharedPreferencesEditor.clear().apply()
+
+        val intent = Intent(applicationContext, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
+    }
 }

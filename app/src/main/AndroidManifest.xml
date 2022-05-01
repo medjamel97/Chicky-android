@@ -17,18 +17,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.activities.forgetpassword"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activities.ForgotPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -47,7 +46,12 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".ui.activities.MusicActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.PostActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
