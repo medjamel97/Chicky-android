@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setFragment(SearchFragment())
+        setFragment(PostsFragment())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
