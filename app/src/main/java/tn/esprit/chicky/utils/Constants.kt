@@ -7,10 +7,10 @@ object Constants {
     //const val BASE_URL = "http://10.0.2.2:$PORT/"
 
     /// ------ Device ------ ///
-    //const val BASE_URL = "http://192.168.1.41:$PORT/"
+    const val BASE_URL = "http://172.17.10.24:$PORT/"
 
     /// ------ Heroku ------ ///
-    const val BASE_URL = "https://chicky-app.herokuapp.com/"
+    //const val BASE_URL = "https://chicky-app.herokuapp.com/"
 
     const val BASE_URL_IMAGES = BASE_URL + "images-files/"
     const val BASE_URL_VIDEOS = BASE_URL + "videos-files/"
