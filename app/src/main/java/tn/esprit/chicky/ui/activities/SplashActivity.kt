@@ -24,7 +24,7 @@ class SplashActivity : Activity() {
         val intent: Intent = if (userData != null) {
             Intent(this@SplashActivity, MainActivity::class.java)
         } else {
-            Intent(this@SplashActivity, LoginActivity::class.java)
+            Intent(this@SplashActivity, MainActivity::class.java)
         }
 
         startActivity(intent)
