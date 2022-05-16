@@ -17,6 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 
 import androidx.fragment.app.Fragment
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment.TAG
 import com.mapbox.maps.CameraOptions
 
 import com.mapbox.maps.MapView
@@ -33,31 +35,10 @@ import tn.esprit.chicky.R
 class SocialFragment : Fragment() {
 
     var mapView: MapView? = null
-    /*
-    private lateinit var locationPermissionHelper: LocationPermissionHelper
 
-    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
-    }
+    //get nearby places
 
-    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
-        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
-    }
 
-    private val onMoveListener = object : OnMoveListener {
-        override fun onMoveBegin(detector: MoveGestureDetector) {
-            onCameraTrackingDismissed()
-        }
-
-        override fun onMove(detector: MoveGestureDetector): Boolean {
-            return false
-        }
-
-        override fun onMoveEnd(detector: MoveGestureDetector) {}
-    }
-    private lateinit var mapView: MapView
-*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,69 +47,29 @@ class SocialFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_social, container, false)
 
+
+
         mapView = view.findViewById(R.id.mapView)
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
+
+
+
+
+
+
+
+
+
 
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             when {
                 permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    mapView!!.location.locationPuck = LocationPuck2D(
-                        topImage = AppCompatResources.getDrawable(
-                            view.context,
-                            com.mapbox.maps.plugin.locationcomponent.R.drawable.mapbox_user_icon
-                        ),
-                        bearingImage = AppCompatResources.getDrawable(
-                            view.context,
-                            com.mapbox.maps.plugin.locationcomponent.R.drawable.mapbox_user_bearing_icon
-                        ),
-                        shadowImage = AppCompatResources.getDrawable(
-                            view.context,
-                            com.mapbox.maps.plugin.locationcomponent.R.drawable.mapbox_user_stroke_icon
-                        ),
-                        scaleExpression = interpolate {
-                            linear()
-                            zoom()
-                            stop {
-                                literal(0.0)
-                                literal(0.6)
-                            }
-                            stop {
-                                literal(20.0)
-                                literal(1.0)
-                            }
-                        }.toJson()
-                    )
+
                 }
                 permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    // Only approximate location access granted.
-                    mapView!!.location.locationPuck = LocationPuck2D(
-                        topImage = AppCompatResources.getDrawable(
-                            view.context,
-                            com.mapbox.maps.plugin.locationcomponent.R.drawable.mapbox_user_icon
-                        ),
-                        bearingImage = AppCompatResources.getDrawable(
-                            view.context,
-                            com.mapbox.maps.plugin.locationcomponent.R.drawable.mapbox_user_bearing_icon
-                        ),
-                        shadowImage = AppCompatResources.getDrawable(
-                            view.context,
-                            com.mapbox.maps.plugin.locationcomponent.R.drawable.mapbox_user_stroke_icon
-                        ),
-                        scaleExpression = interpolate {
-                            linear()
-                            zoom()
-                            stop {
-                                literal(0.0)
-                                literal(0.6)
-                            }
-                            stop {
-                                literal(20.0)
-                                literal(1.0)
-                            }
-                        }.toJson()
-                    )
+
                 }
                 else -> {
                     // No location access granted.
@@ -148,11 +89,12 @@ class SocialFragment : Fragment() {
         try {
             // Request location updates
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+            onMapReady()
         } catch(ex: SecurityException) {
             Log.d("myTag", "Security Exception, no location available")
         }
 
-        onMapReady()
+
 
         return view
     }
@@ -172,6 +114,8 @@ class SocialFragment : Fragment() {
 
     private fun initLocationComponent() {
         val locationComponentPlugin = mapView!!.location
+        println("-----------------------------------")
+        println(mapView!!.location)
         locationComponentPlugin.updateSettings {
             this.enabled = true
             this.locationPuck = LocationPuck2D(
@@ -196,6 +140,7 @@ class SocialFragment : Fragment() {
                     }
                 }.toJson()
             )
+
         }
         //locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
         //locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
@@ -209,6 +154,7 @@ class SocialFragment : Fragment() {
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
+
     }
 
 

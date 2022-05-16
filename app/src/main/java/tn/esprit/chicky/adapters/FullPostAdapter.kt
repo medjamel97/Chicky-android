@@ -1,10 +1,12 @@
 package tn.esprit.chicky.adapters;
 
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
@@ -17,7 +19,10 @@ import tn.esprit.chicky.R
 import tn.esprit.chicky.models.Post
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.PostService
+import tn.esprit.chicky.service.UserService
+import tn.esprit.chicky.ui.activities.LoginActivity
 import tn.esprit.chicky.utils.Constants
+import java.time.LocalDateTime
 
 class FullPostAdapter(var items: MutableList<Post>) :
 
@@ -36,13 +41,14 @@ class FullPostAdapter(var items: MutableList<Post>) :
 
     class PostViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
-
+        val currentTime = LocalDateTime.now()
         private val videoView: VideoView = itemView.findViewById(R.id.videoView)
         private val postTitleTV: TextView = itemView.findViewById(R.id.postTitleTV)
         private val postDescriptionTV: TextView = itemView.findViewById(R.id.postDescriptionTV)
         private val deleteButton: TextView = itemView.findViewById(R.id.deleteButton)
         private val reportButton: TextView = itemView.findViewById(R.id.reportButton)
         private val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
+        var likebutton: Button? = itemView.findViewById(R.id.likebutton)
 
         fun bindView(post: Post) {
 
@@ -84,6 +90,7 @@ class FullPostAdapter(var items: MutableList<Post>) :
                             }
                         }
 
+
                         override fun onFailure(
                             call: Call<PostService.MessageResponse?>,
                             t: Throwable
@@ -94,6 +101,34 @@ class FullPostAdapter(var items: MutableList<Post>) :
                     }
                 )
             }
+            likebutton?.setOnClickListener {
+                ApiService.postService.addlike(
+                    PostService.LikeBody(
+                        "a", ""
+                    )
+                ).enqueue(
+                    object : Callback<PostService.LikesResponse> {
+                        override fun onResponse(
+                            call: Call<PostService.LikesResponse>,
+                            response: Response<PostService.LikesResponse>
+                        ) {
+                            if (response.code() == 200) {
+
+                            } else {
+                                Log.d("HTTP ERROR", "status code is " + response.code())
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<PostService.LikesResponse>,
+                            t: Throwable
+                        ) {
+                            Log.d("FAIL", "fail")
+                        }
+                    }
+                )
+            }
+
             reportButton.setOnClickListener {
                 Snackbar.make(itemView, "Coming soon", Snackbar.LENGTH_SHORT).show()
             }

@@ -4,9 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.GridView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -18,6 +16,7 @@ import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.PostService
 import tn.esprit.chicky.utils.Constants
+import tn.esprit.chicky.utils.ImageLoader
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -26,6 +25,7 @@ class ProfileActivity : AppCompatActivity() {
     var btnlogout: Button? = null
     var btndelete: Button? = null
     var postsGV: GridView? = null
+    var roundedimage: ImageView? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +36,23 @@ class ProfileActivity : AppCompatActivity() {
         btnlogout = findViewById(R.id.btnlogout)
         btndelete = findViewById(R.id.delete)
         postsGV = findViewById(R.id.postsGV)
+        roundedimage = findViewById(R.id.roundedimage)
 
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
         val userData = sharedPreferences.getString("USER_DATA", null)
+
+
+
 
         if (userData != null) {
             val user: User = Gson().fromJson(userData, User::class.java)
             fullName!!.text = user.firstname + " " + user.lastname
             email!!.text = user.email
+            //image
+            ImageLoader.setImageFromUrlWithoutProgress(
+                roundedimage!!,
+                Constants.BASE_URL_IMAGES + user.imageFilename
+            )
         }
 
         btnlogout!!.setOnClickListener {
@@ -60,7 +69,10 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         btndelete!!.setOnClickListener {
-
+            val intent =
+                Intent(this@ProfileActivity, EditProfileActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         getMyPosts()

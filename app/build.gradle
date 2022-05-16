@@ -29,6 +29,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -82,5 +83,8 @@ dependencies {
     // Shimmer loading effect
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
+
+    //get nearby places
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v9:0.12.0'
 
 }

@@ -24,4 +24,18 @@ object ImageLoader {
             }
         }
     }
+
+    fun setImageFromUrlWithoutProgress(imageView: ImageView, url: String) {
+        Executors.newSingleThreadExecutor().execute {
+            try {
+                val image = BitmapFactory.decodeStream(java.net.URL(url).openStream())
+
+                Handler(Looper.getMainLooper()).post {
+                    imageView.setImageBitmap(image)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }

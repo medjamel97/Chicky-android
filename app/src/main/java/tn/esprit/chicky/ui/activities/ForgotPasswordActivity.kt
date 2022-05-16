@@ -15,18 +15,22 @@ import tn.esprit.chicky.service.UserService
 class ForgotPasswordActivity : AppCompatActivity() {
 
     var btnemail: Button? = null
+    //
+    var emailid: TextInputEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
         btnemail = findViewById(R.id.btnemail)
-
+        emailid = findViewById(R.id.emailid)
         btnemail!!.setOnClickListener {
-
+            println("--------------------")
+println(emailid!!.text.toString())
+            println("--------------------")
             ApiService.userService.forgetpassword(
                 UserService.ForgetBody(
-                    "a@gmail.com"
+                    emailid!!.text.toString(),
                 )
             ).enqueue(
                 object : Callback<UserService.UserResponse> {
