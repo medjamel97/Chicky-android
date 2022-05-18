@@ -1,6 +1,7 @@
 package tn.esprit.chicky.ui.fragments
 
 import android.Manifest
+import android.app.Application
 import android.content.Context.LOCATION_SERVICE
 import android.location.Location
 import android.location.LocationListener
@@ -17,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 
 import androidx.fragment.app.Fragment
+import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment.TAG
 import com.mapbox.maps.CameraOptions
@@ -29,6 +31,7 @@ import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.gestures.gestures
 
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.search.MapboxSearchSdk
 import tn.esprit.chicky.R
 
 
@@ -57,7 +60,11 @@ class SocialFragment : Fragment() {
 
 
 
-
+        MapboxSearchSdk.initialize(
+            application = Application() ,
+            accessToken = getString(R.string.mapbox_access_token),
+            locationEngine = LocationEngineProvider.getBestLocationEngine(activity!!)
+        )
 
 
 

@@ -58,6 +58,7 @@
         <activity
             android:name=".ui.activities.PostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

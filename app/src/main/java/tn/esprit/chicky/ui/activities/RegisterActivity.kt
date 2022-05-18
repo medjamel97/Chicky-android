@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
@@ -13,6 +14,10 @@ import retrofit2.Response
 import tn.esprit.chicky.R
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.UserService
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+
+
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -40,32 +45,8 @@ class RegisterActivity : AppCompatActivity() {
         btncnx = findViewById(R.id.btncnx)
 
 
-        /*
-        if (usernameid?.text!!.isEmpty()) {
-            usernamelayout!!.error = getString(R.string.mustNotBeEmpty)
-            return false
-        }
 
-        if (txtFullName?.length()!! < 3) {
-            txtLayoutFullName!!.error = getString(R.string.mustBeAtLeast3)
-            return false
-        }
 
-        if (txtEmail?.text!!.isEmpty()) {
-            usernamelayout!!.error = getString(R.string.mustNotBeEmpty)
-            return false
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(txtEmail?.text!!).matches()) {
-            txtLayoutEmail!!.error = getString(R.string.checkYourEmail)
-            return false
-        }
-
-        if (txtAge?.text!!.isEmpty()) {
-            txtLayoutAge!!.error = getString(R.string.mustNotBeEmpty)
-            return false
-        }
-*/
 
         btncnx!!.setOnClickListener {
             ApiService.userService.register(
