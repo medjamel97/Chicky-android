@@ -1,11 +1,11 @@
 package tn.esprit.chicky.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
@@ -23,8 +23,6 @@ import tn.esprit.chicky.utils.ImageLoader
 class EditProfileActivity : AppCompatActivity() {
 
 
-
-
     var usernameid: TextInputEditText? = null
     var emailid: TextInputEditText? = null
 
@@ -32,7 +30,7 @@ class EditProfileActivity : AppCompatActivity() {
     private var usernamelayout: TextInputLayout? = null
     private var emaillayout: TextInputLayout? = null
 
-    var roundedimage: ImageView? =null
+    var roundedimage: ImageView? = null
 
     //var mdpid: TextInputEditText? = null
     var btncnx: Button? = null
@@ -57,8 +55,8 @@ class EditProfileActivity : AppCompatActivity() {
         roundedimage = findViewById(R.id.roundedimage)
         if (userData != null) {
             val user: User = Gson().fromJson(userData, User::class.java)
-         //   fullName!!.text = user.firstname + " " + user.lastname
-          //  email!!.text = user.email
+            //   fullName!!.text = user.firstname + " " + user.lastname
+            //  email!!.text = user.email
             //image
             ImageLoader.setImageFromUrlWithoutProgress(
                 roundedimage!!,

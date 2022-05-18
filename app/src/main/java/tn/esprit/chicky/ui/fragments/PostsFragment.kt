@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +20,7 @@ import tn.esprit.chicky.service.PostService
 class PostsFragment : Fragment() {
 
     var viewPagerVideos: ViewPager2? = null
+    private var postsSL: ShimmerFrameLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +31,9 @@ class PostsFragment : Fragment() {
 
         // FIND VIEWS
         viewPagerVideos = view.findViewById(R.id.viewPagerVideos);
+        postsSL = view.findViewById(R.id.postsSL)
+
+        postsSL!!.startShimmer()
 
         ApiService.postService.getPosts()
             .enqueue(
@@ -40,6 +45,9 @@ class PostsFragment : Fragment() {
                         if (response.code() == 200) {
                             viewPagerVideos!!.adapter =
                                 FullPostAdapter(response.body()?.posts!!.reversed() as MutableList<Post>)
+
+                            postsSL!!.stopShimmer()
+                            postsSL!!.visibility = View.GONE
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
                         }

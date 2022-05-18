@@ -6,7 +6,6 @@ plugins {
 apply plugin: 'kotlin-android-extensions'
 
 android {
-
     compileSdk 31
 
     defaultConfig {

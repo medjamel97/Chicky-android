@@ -47,7 +47,7 @@ interface UserService {
 
     @POST("/users/updatePassword")
     fun updatePassword(@Body updatePasswordBody: UpdatePasswordBody): Call<MessageResponse>
-    
+
     @PUT("/user/update-profile")
     fun updateProfile(@Body userBody: UserupdateBody): Call<UserResponse>
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
@@ -14,9 +13,6 @@ import retrofit2.Response
 import tn.esprit.chicky.R
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.UserService
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-
-
 
 
 class RegisterActivity : AppCompatActivity() {

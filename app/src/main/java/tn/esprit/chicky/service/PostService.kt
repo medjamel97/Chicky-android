@@ -5,11 +5,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import tn.esprit.chicky.models.Like
-import tn.esprit.chicky.models.Music
 import tn.esprit.chicky.models.Post
-import tn.esprit.chicky.models.User
-import java.util.*
 
 
 interface PostService {
