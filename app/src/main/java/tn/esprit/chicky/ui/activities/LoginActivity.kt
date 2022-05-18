@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import retrofit2.Call
@@ -17,23 +20,37 @@ import tn.esprit.chicky.service.UserService
 import tn.esprit.chicky.utils.Constants
 
 class LoginActivity : AppCompatActivity() {
-
+    var signInButton: SignInButton? = null
     var emailid: TextInputEditText? = null
     var mdpid: TextInputEditText? = null
     var btncnx: Button? = null
     var btnforgetpassword: Button? = null
     var btnsignup: Button? = null
+//googlesignin
+val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    .requestEmail()
+    .build()
+    val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+
+         signInButton = findViewById(R.id.sign_in_button);
+        signInButton!!.setSize(SignInButton.SIZE_STANDARD);
         emailid = findViewById(R.id.emailid)
         mdpid = findViewById(R.id.mdpid)
         btncnx = findViewById(R.id.btncnx)
         btnforgetpassword = findViewById(R.id.btnforgetpassword)
         btnsignup = findViewById(R.id.btnsignup)
+
+
+
+        signInButton!!.setOnClickListener{
+
+        }
 
         btncnx!!.setOnClickListener {
             login()
@@ -44,11 +61,18 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnforgetpassword!!.setOnClickListener {
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
+
+
+    private fun signIn() {
+        val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
+        //startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
 
     private fun login() {
         ApiService.userService.login(

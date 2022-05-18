@@ -2,10 +2,7 @@ package tn.esprit.chicky.service
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import tn.esprit.chicky.models.User
 
 interface UserService {
@@ -22,6 +19,7 @@ interface UserService {
 
     data class LoginBody(val email: String, val password: String)
     data class UserBody(val email: String, val password: String, val username: String)
+    data class UserupdateBody(val email: String, val username: String)
     data class OneUserBody(val _id: String)
     data class ResetBody(val resetCode: String, val email: String)
     data class UpdatePasswordBody(val email: String, val newPassword: String)
@@ -49,4 +47,7 @@ interface UserService {
 
     @POST("/users/updatePassword")
     fun updatePassword(@Body updatePasswordBody: UpdatePasswordBody): Call<MessageResponse>
+    
+    @PUT("/user/update-profile")
+    fun updateProfile(@Body userBody: UserupdateBody): Call<UserResponse>
 }

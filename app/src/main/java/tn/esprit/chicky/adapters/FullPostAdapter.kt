@@ -1,12 +1,14 @@
 package tn.esprit.chicky.adapters;
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
@@ -23,7 +25,10 @@ import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.LikeService
 import tn.esprit.chicky.service.PostService
 import tn.esprit.chicky.ui.activities.CommentsModal
+import tn.esprit.chicky.service.UserService
+import tn.esprit.chicky.ui.activities.LoginActivity
 import tn.esprit.chicky.utils.Constants
+import java.time.LocalDateTime
 
 class FullPostAdapter(var items: MutableList<Post>) :
 
@@ -42,7 +47,7 @@ class FullPostAdapter(var items: MutableList<Post>) :
 
     class PostViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
-
+        val currentTime = LocalDateTime.now()
         private val videoView: VideoView = itemView.findViewById(R.id.videoView)
         private val postTitleTV: TextView = itemView.findViewById(R.id.postTitleTV)
         private val postDescriptionTV: TextView = itemView.findViewById(R.id.postDescriptionTV)
@@ -92,6 +97,7 @@ class FullPostAdapter(var items: MutableList<Post>) :
                                 Log.d("HTTP ERROR", "status code is " + response.code())
                             }
                         }
+
 
                         override fun onFailure(
                             call: Call<PostService.MessageResponse?>,

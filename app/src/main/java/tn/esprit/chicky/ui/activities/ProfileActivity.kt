@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -82,7 +83,10 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         btndelete!!.setOnClickListener {
-
+            val intent =
+                Intent(this@ProfileActivity, EditProfileActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         getMyPosts()

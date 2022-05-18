@@ -135,7 +135,9 @@
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_comment"
                 app:tint="@color/white" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

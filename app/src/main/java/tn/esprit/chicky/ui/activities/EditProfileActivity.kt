@@ -1,34 +1,38 @@
 package tn.esprit.chicky.ui.activities
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import android.widget.ImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
+import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.UserService
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import tn.esprit.chicky.utils.Constants
+import tn.esprit.chicky.utils.ImageLoader
+
+
+class EditProfileActivity : AppCompatActivity() {
 
 
 
-
-class RegisterActivity : AppCompatActivity() {
 
     var usernameid: TextInputEditText? = null
     var emailid: TextInputEditText? = null
-    var mdpid: TextInputEditText? = null
+
 
     private var usernamelayout: TextInputLayout? = null
     private var emaillayout: TextInputLayout? = null
-    private var mdplayout: TextInputLayout? = null
 
+    var roundedimage: ImageView? =null
 
     //var mdpid: TextInputEditText? = null
     var btncnx: Button? = null
@@ -37,22 +41,37 @@ class RegisterActivity : AppCompatActivity() {
         //  usernamelayout = findViewById(R.id.username)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_edit_profile)
 
         usernameid = findViewById(R.id.usernameid)
         emailid = findViewById(R.id.emailid)
-        mdpid = findViewById(R.id.mdpid)
+
         btncnx = findViewById(R.id.btncnx)
 
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
+        val userData = sharedPreferences.getString("USER_DATA", null)
 
+
+
+
+        roundedimage = findViewById(R.id.roundedimage)
+        if (userData != null) {
+            val user: User = Gson().fromJson(userData, User::class.java)
+         //   fullName!!.text = user.firstname + " " + user.lastname
+          //  email!!.text = user.email
+            //image
+            ImageLoader.setImageFromUrlWithoutProgress(
+                roundedimage!!,
+                Constants.BASE_URL_IMAGES + user.imageFilename
+            )
+        }
 
 
 
         btncnx!!.setOnClickListener {
-            ApiService.userService.register(
-                UserService.UserBody(
+            ApiService.userService.updateProfile(
+                UserService.UserupdateBody(
                     emailid!!.text.toString(),
-                    mdpid!!.text.toString(),
                     usernameid!!.text.toString()
                 )
             ).enqueue(
@@ -63,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                     ) {
                         if (response.code() == 200) {
                             val intent =
-                                Intent(this@RegisterActivity, LoginActivity::class.java)
+                                Intent(this@EditProfileActivity, ProfileActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {

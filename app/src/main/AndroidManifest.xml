@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activities.EditProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppSplash">
@@ -55,6 +58,7 @@
         <activity
             android:name=".ui.activities.PostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
