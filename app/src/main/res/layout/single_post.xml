@@ -106,70 +106,32 @@
             android:text="@string/description"
             android:textColor="@color/white" />
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/ic_star"
-                app:tint="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/ic_star"
-                app:tint="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/ic_star"
-                app:tint="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/ic_star"
-                app:tint="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/ic_star"
-                app:tint="@color/white" />
-        </LinearLayout>
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
-            <ImageView
+            <TextView
+                android:id="@+id/likeCountTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/_0" />
+
+            <ImageButton
+                android:id="@+id/likeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_favorite_border"
                 app:tint="@color/white" />
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/commentsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:background="@color/transparent"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_comment"
                 app:tint="@color/white" />

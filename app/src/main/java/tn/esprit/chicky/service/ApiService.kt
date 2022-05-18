@@ -30,4 +30,12 @@ object ApiService {
         retrofit().create(ConversationService::class.java)
     }
 
+    val likeService: LikeService by lazy {
+        retrofit().create(LikeService::class.java)
+    }
+
+    val commentService: CommentService by lazy {
+        retrofit().create(CommentService::class.java)
+    }
+
 }

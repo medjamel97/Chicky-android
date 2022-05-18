@@ -15,7 +15,6 @@ import tn.esprit.chicky.R
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.UserService
 import tn.esprit.chicky.utils.Constants
-import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 

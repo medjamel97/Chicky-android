@@ -39,7 +39,9 @@ class UserAdapter(private var items: MutableList<User>) :
         fun bindView(user: User) {
 
             itemView.setOnClickListener {
-                itemView.context.startActivity(Intent(itemView.context, ProfileActivity::class.java))
+                val intent = Intent(itemView.context, ProfileActivity::class.java)
+                intent.putExtra("user", user)
+                itemView.context.startActivity(intent)
             }
 
             ImageLoader.setImageFromUrl(

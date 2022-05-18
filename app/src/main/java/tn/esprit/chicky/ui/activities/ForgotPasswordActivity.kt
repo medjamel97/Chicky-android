@@ -1,5 +1,6 @@
 package tn.esprit.chicky.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -14,35 +15,47 @@ import tn.esprit.chicky.service.UserService
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
-    var btnemail: Button? = null
+    var emailTIET: TextInputEditText? = null
+    var nextBtn: Button? = null
+    var resetCode: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
-        btnemail = findViewById(R.id.btnemail)
+        nextBtn = findViewById(R.id.nextBtn)
+        emailTIET = findViewById(R.id.emailTIET)
 
-        btnemail!!.setOnClickListener {
+        resetCode = (1000 until 9999).random()
 
-            ApiService.userService.forgetpassword(
-                UserService.ForgetBody(
-                    "a@gmail.com"
+        println("RESET CODE IS : $resetCode")
+
+        nextBtn!!.setOnClickListener {
+
+            ApiService.userService.forgotPassword(
+                UserService.ResetBody(
+                    resetCode.toString(),
+                    emailTIET!!.text.toString()
                 )
             ).enqueue(
-                object : Callback<UserService.UserResponse> {
+                object : Callback<UserService.MessageResponse> {
                     override fun onResponse(
-                        call: Call<UserService.UserResponse>,
-                        response: Response<UserService.UserResponse>
+                        call: Call<UserService.MessageResponse>,
+                        response: Response<UserService.MessageResponse>
                     ) {
                         if (response.code() == 200) {
-
+                            val intent = Intent(baseContext, ResetCodeActivity::class.java)
+                            intent.putExtra("RESET_CODE", resetCode)
+                            intent.putExtra("EMAIL", emailTIET!!.text.toString())
+                            startActivity(intent)
+                            finish()
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
                         }
                     }
 
                     override fun onFailure(
-                        call: Call<UserService.UserResponse>,
+                        call: Call<UserService.MessageResponse>,
                         t: Throwable
                     ) {
                         Log.d("FAIL", "fail")

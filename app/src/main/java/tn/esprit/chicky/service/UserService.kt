@@ -23,7 +23,8 @@ interface UserService {
     data class LoginBody(val email: String, val password: String)
     data class UserBody(val email: String, val password: String, val username: String)
     data class OneUserBody(val _id: String)
-    data class ForgetBody(val email: String)
+    data class ResetBody(val resetCode: String, val email: String)
+    data class UpdatePasswordBody(val email: String, val newPassword: String)
 
     @GET("/user")
     fun getAll(): Call<UsersResponse>
@@ -39,7 +40,13 @@ interface UserService {
 
     @DELETE("/one")
     fun deleteUser(@Body userBody: OneUserBody): Call<UserResponse>
+    data class MessageResponse(
+        val message: String
+    )
 
-    @POST("/user/forgot-password")
-    fun forgetpassword(@Body userBody: ForgetBody): Call<UserResponse>
+    @POST("/users/forgotPassword")
+    fun forgotPassword(@Body resetBody: ResetBody): Call<MessageResponse>
+
+    @POST("/users/updatePassword")
+    fun updatePassword(@Body updatePasswordBody: UpdatePasswordBody): Call<MessageResponse>
 }

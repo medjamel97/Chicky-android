@@ -39,7 +39,7 @@ class PostsFragment : Fragment() {
                     ) {
                         if (response.code() == 200) {
                             viewPagerVideos!!.adapter =
-                                FullPostAdapter(response.body()?.posts as MutableList<Post>)
+                                FullPostAdapter(response.body()?.posts!!.reversed() as MutableList<Post>)
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
                         }

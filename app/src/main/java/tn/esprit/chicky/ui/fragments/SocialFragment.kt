@@ -1,5 +1,3 @@
-
-
 package tn.esprit.chicky.ui.fragments
 
 import android.Manifest
@@ -25,9 +23,9 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import tn.esprit.chicky.R
 
 
-class SocialFragment :   Fragment() {
+class SocialFragment : Fragment() {
 
-     var mapView: MapView? = null
+    var mapView: MapView? = null
     /*
     private lateinit var locationPermissionHelper: LocationPermissionHelper
 
@@ -58,7 +56,6 @@ class SocialFragment :   Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
 
         val view = inflater.inflate(R.layout.fragment_social, container, false)
@@ -129,43 +126,12 @@ class SocialFragment :   Fragment() {
                             }
                         }.toJson()
                     )
-                } else -> {
-                // No location access granted.
-            }
+                }
+                else -> {
+                    // No location access granted.
+                }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /*
@@ -264,13 +230,7 @@ private fun initLocationComponent() {
 */
 
 
-    //  val locationPermissionRequest = registerForActivityResult(
-
-
-
-
-
-
+        //  val locationPermissionRequest = registerForActivityResult(
 
 
         return view

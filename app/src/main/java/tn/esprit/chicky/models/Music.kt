@@ -1,5 +1,7 @@
 package tn.esprit.chicky.models
 
+import java.io.Serializable
+
 data class Music(
 
     val _id: String,
@@ -8,4 +10,4 @@ data class Music(
     val filename: String,
     val imageFilename: String
     //val likes: String,
-)
+) : Serializable

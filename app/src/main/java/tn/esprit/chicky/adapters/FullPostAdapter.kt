@@ -1,22 +1,28 @@
 package tn.esprit.chicky.adapters;
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
 import tn.esprit.chicky.models.Post
+import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
+import tn.esprit.chicky.service.LikeService
 import tn.esprit.chicky.service.PostService
+import tn.esprit.chicky.ui.activities.CommentsModal
 import tn.esprit.chicky.utils.Constants
 
 class FullPostAdapter(var items: MutableList<Post>) :
@@ -43,6 +49,9 @@ class FullPostAdapter(var items: MutableList<Post>) :
         private val deleteButton: TextView = itemView.findViewById(R.id.deleteButton)
         private val reportButton: TextView = itemView.findViewById(R.id.reportButton)
         private val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
+        private val likeCountTV: TextView = itemView.findViewById(R.id.likeCountTV)
+        private val likeButton: ImageButton = itemView.findViewById(R.id.likeButton)
+        private val commentsButton: ImageButton = itemView.findViewById(R.id.commentsButton)
 
         fun bindView(post: Post) {
 
@@ -94,8 +103,68 @@ class FullPostAdapter(var items: MutableList<Post>) :
                     }
                 )
             }
+
             reportButton.setOnClickListener {
                 Snackbar.make(itemView, "Coming soon", Snackbar.LENGTH_SHORT).show()
+            }
+
+            var userHasLike = false
+            var currentLikeCount = post.likes!!.size
+
+            val sharedPreferences =
+                itemView.context.getSharedPreferences(Constants.SHARED_PREF_SESSION, Context.MODE_PRIVATE)
+            val userData = sharedPreferences.getString("USER_DATA", null)
+
+            val user: User? = if (userData != null) {
+                Gson().fromJson(userData, User::class.java)
+            } else {
+                null
+            }
+
+            for (like in post.likes) {
+                if (like.user!!._id == userData) {
+                    likeButton.setImageResource(R.drawable.ic_favorite)
+                    userHasLike = true
+                }
+            }
+
+            likeCountTV.text = currentLikeCount.toString()
+
+            likeButton.setOnClickListener {
+
+                ApiService.likeService.addOrRemoveLike(
+                    LikeService.LikeBody(post._id, user!!._id)
+                ).enqueue(object : Callback<LikeService.LikeResponse> {
+                    override fun onResponse(
+                        call: Call<LikeService.LikeResponse>,
+                        response: Response<LikeService.LikeResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            if (userHasLike) {
+                                currentLikeCount -= 1
+                                likeCountTV.text = currentLikeCount.toString()
+                                likeButton.setImageResource(R.drawable.ic_favorite_border)
+                            } else {
+                                currentLikeCount += 1
+                                likeCountTV.text = currentLikeCount.toString()
+                                likeButton.setImageResource(R.drawable.ic_favorite)
+                            }
+                            userHasLike = !userHasLike
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<LikeService.LikeResponse>,
+                        t: Throwable
+                    ) {
+                        t.printStackTrace()
+                    }
+                })
+            }
+            commentsButton.setOnClickListener {
+                CommentsModal().apply {
+                    show(activity!!.supportFragmentManager, CommentsModal.TAG)
+                }
             }
         }
     }

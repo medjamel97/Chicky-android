@@ -40,7 +40,9 @@ class MusicAdapter(var items: MutableList<Music>) :
         fun bindView(music: Music) {
 
             itemView.setOnClickListener {
-                itemView.context.startActivity(Intent(itemView.context, MusicActivity::class.java))
+                val intent = Intent(itemView.context, MusicActivity::class.java)
+                intent.putExtra("music", music)
+                itemView.context.startActivity(intent)
             }
 
             ImageLoader.setImageFromUrl(

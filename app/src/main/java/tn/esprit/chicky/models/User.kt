@@ -1,5 +1,6 @@
 package tn.esprit.chicky.models
 
+import java.io.Serializable
 import java.util.*
 
 data class User(
@@ -15,4 +16,4 @@ data class User(
     val imageFilename: String,
     val role: String,
     val isVerified: Boolean
-)
+) : Serializable

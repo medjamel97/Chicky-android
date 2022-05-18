@@ -7,5 +7,7 @@ data class Post(
     val title: String,
     val description: String,
     val videoFilename: String,
-    val user: User?
+    val user: User?,
+    val likes: List<Like>?,
+    val comments: List<Comment>?
 ) : Serializable

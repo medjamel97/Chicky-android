@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import tn.esprit.chicky.R
-import tn.esprit.chicky.ui.fragments.*
+import tn.esprit.chicky.ui.fragments.ChatFragment
+import tn.esprit.chicky.ui.fragments.PostsFragment
+import tn.esprit.chicky.ui.fragments.SearchFragment
+import tn.esprit.chicky.ui.fragments.SocialFragment
 
 class MainActivity : AppCompatActivity() {
 
