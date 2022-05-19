@@ -51,7 +51,7 @@ class ProfileActivity : AppCompatActivity() {
         profileIV = findViewById(R.id.profileIV)
 
         println(intent.dataString)
-        val qrUserId  = intent.dataString
+        var qrUserId  = intent.dataString
 
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
         val userData = sharedPreferences.getString("USER_DATA", null)
@@ -63,38 +63,6 @@ class ProfileActivity : AppCompatActivity() {
             currentUser = sessionUser
         }
 
-        if (qrUserId != null) {
-            qrUserId.replace("chicky://","")
-
-            //411111111111111111111
-            //ay esm
-            //cvc 111
-            ApiService.userService.getUser(
-                UserService.OneUserBody(
-                    qrUserId
-                )
-            ).enqueue(
-                object : Callback<UserService.UserResponse> {
-                    override fun onResponse(
-                        call: Call<UserService.UserResponse>,
-                        response: Response<UserService.UserResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            currentUser = response.body()?.user
-                        } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<UserService.UserResponse>,
-                        t: Throwable
-                    ) {
-                        Log.d("FAIL", "fail")
-                    }
-                }
-            )
-        }
 
         if (currentUser != sessionUser) {
             btnlogout!!.text = "Block"
@@ -139,6 +107,46 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
+        if (qrUserId != null) {
+            qrUserId =qrUserId.replace("chicky://","")
+
+
+            //411111111111111111111
+            //ay esm
+            //cvc 111
+            ApiService.userService.getUser(
+                UserService.OneUserBody(
+                    qrUserId
+                )
+            ).enqueue(
+                object : Callback<UserService.UserResponse> {
+                    override fun onResponse(
+                        call: Call<UserService.UserResponse>,
+                        response: Response<UserService.UserResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            currentUser = response.body()?.user
+                            initProfile()
+                        } else {
+                            Log.d("HTTP ERROR", "status code is " + response.code())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<UserService.UserResponse>,
+                        t: Throwable
+                    ) {
+                        Log.d("FAIL", "fail")
+                    }
+                }
+            )
+        }
+
+        initProfile()
+        getMyPosts()
+    }
+
+    fun initProfile(){
         fullName!!.text = currentUser!!.firstname + " " + currentUser!!.lastname
         email!!.text = currentUser!!.email
 
@@ -168,11 +176,7 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        getMyPosts()
     }
-
-
 
     fun getQrCodeBitmap(): Bitmap {
         val size = 512 //pixels
