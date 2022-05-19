@@ -107,10 +107,10 @@ class SocialFragment : Fragment() {
         val annotationApi = mapView?.annotations
         val pointAnnotationManager = annotationApi?.createPointAnnotationManager()
         val iconBitmap: Bitmap
-        if (isCoffee) {
-            iconBitmap = bitmapFromDrawableRes(requireContext(), R.drawable.ic_local_cafe)!!
+        iconBitmap = if (isCoffee) {
+            bitmapFromDrawableRes(requireContext(), R.drawable.ic_local_cafe)!!
         } else {
-            iconBitmap = bitmapFromDrawableRes(requireContext(), R.drawable.ic_building)!!
+            bitmapFromDrawableRes(requireContext(), R.drawable.ic_building)!!
         }
         val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
             .withPoint(Point.fromLngLat(long, lat))

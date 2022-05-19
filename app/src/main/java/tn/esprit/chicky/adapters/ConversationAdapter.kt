@@ -17,7 +17,6 @@ import tn.esprit.chicky.models.Conversation
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.ChatService
 import tn.esprit.chicky.ui.activities.ChatActivity
-import tn.esprit.chicky.ui.activities.PostActivity
 import tn.esprit.chicky.utils.Constants
 import tn.esprit.chicky.utils.ImageLoader
 
@@ -26,7 +25,7 @@ class ConversationAdapter(var items: MutableList<Conversation>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.single_chat, parent, false)
+            .inflate(R.layout.single_conversation, parent, false)
         return ConversationViewHolder(view)
     }
 

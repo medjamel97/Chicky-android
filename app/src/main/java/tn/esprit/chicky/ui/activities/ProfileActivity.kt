@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,25 +30,20 @@ import tn.esprit.chicky.utils.ImageLoader
 
 class ProfileActivity : AppCompatActivity() {
 
-    var fullName: TextView? = null
-    var email: TextView? = null
-    var btnlogout: Button? = null
-    var btnqr: Button? = null
-    var btndelete: Button? = null
-    var postsGV: GridView? = null
-    var profileIV: ImageView? = null
-    var qrimage: ImageView? = null
+    private var fullName: TextView? = null
+    private var email: TextView? = null
+    private var btnlogout: Button? = null
+    private var btnqr: Button? = null
+    private var btndelete: Button? = null
+    private var postsGV: GridView? = null
+    private var profileIV: ImageView? = null
+    private var qrimage: ImageView? = null
 
     private var currentUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
-
-
-
-
 
         fullName = findViewById(R.id.fullName)
         email = findViewById(R.id.email)
@@ -60,12 +55,16 @@ class ProfileActivity : AppCompatActivity() {
         qrimage = findViewById(R.id.qrimage)
 
         println(intent.dataString)
-        val intentt  = intent.dataString
-        intentt!!.replace("chicky://","")
-        if (intentt!! != null) {
+        val qrUserId  = intent.dataString
+        if (qrUserId != null) {
+            qrUserId.replace("chicky://","")
+
+            //411111111111111111111
+            //ay esm
+            //cvc 111
             ApiService.userService.getUser(
                 UserService.OneUserBody(
-                   intentt!!
+                    qrUserId
                 )
             ).enqueue(
                 object : Callback<UserService.UserResponse> {
@@ -74,7 +73,7 @@ class ProfileActivity : AppCompatActivity() {
                         response: Response<UserService.UserResponse>
                     ) {
                         if (response.code() == 200) {
-                          
+
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
                         }

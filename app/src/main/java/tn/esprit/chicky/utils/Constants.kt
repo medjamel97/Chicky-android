@@ -7,7 +7,7 @@ object Constants {
     //const val BASE_URL = "http://10.0.2.2:$PORT/"
 
     /// ------ Device ------ ///
-    const val BASE_URL = "http://192.168.1.202:$PORT/"
+    const val BASE_URL = "http://192.168.137.1:$PORT/"
 
     /// ------ Heroku ------ ///
     //const val BASE_URL = "https://chicky-app.herokuapp.com/"
