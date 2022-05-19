@@ -42,10 +42,10 @@ interface UserService {
         val message: String
     )
 
-    @POST("/users/forgotPassword")
+    @POST("/user/forgot-password")
     fun forgotPassword(@Body resetBody: ResetBody): Call<MessageResponse>
 
-    @POST("/users/updatePassword")
+    @PUT("/user/update-password")
     fun updatePassword(@Body updatePasswordBody: UpdatePasswordBody): Call<MessageResponse>
 
     @PUT("/user/update-profile")

@@ -38,6 +38,13 @@
             android:name=".ui.activities.ForgotPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.ResetCodeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.NewPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".ui.activities.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -70,6 +77,7 @@
         <activity
             android:name=".ui.activities.PostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

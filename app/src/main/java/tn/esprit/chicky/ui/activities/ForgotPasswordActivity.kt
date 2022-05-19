@@ -48,6 +48,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                             intent.putExtra("RESET_CODE", resetCode)
                             intent.putExtra("EMAIL", emailTIET!!.text.toString())
                             startActivity(intent)
+
                             finish()
                         } else {
                             println("status code is " + response.code())

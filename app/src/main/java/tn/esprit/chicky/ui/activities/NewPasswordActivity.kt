@@ -51,6 +51,7 @@ class NewPasswordActivity : AppCompatActivity() {
                                     "Password changed successfully",
                                     Toast.LENGTH_LONG
                                 ).show()
+
                                 finish()
                             } else {
                                 println("status code is " + response.code())

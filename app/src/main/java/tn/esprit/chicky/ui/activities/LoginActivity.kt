@@ -52,7 +52,6 @@ class LoginActivity : AppCompatActivity() {
         btnforgetpassword!!.setOnClickListener {
             val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
 
