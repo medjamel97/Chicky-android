@@ -78,6 +78,18 @@ class ProfileActivity : AppCompatActivity() {
                           
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<UserService.UserResponse>,
+                        t: Throwable
+                    ) {
+                        Log.d("FAIL", "fail")
+                    }
+                }
+            )
+        }
 
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
         val userData = sharedPreferences.getString("USER_DATA", null)
