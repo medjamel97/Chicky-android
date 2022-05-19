@@ -5,6 +5,6 @@ import java.util.*
 
 data class Like(
     var date: Date,
-    var user: User?,
-    var post: Post?
+    var idUser: String?,
+    var idPost: String?
 ) : Serializable

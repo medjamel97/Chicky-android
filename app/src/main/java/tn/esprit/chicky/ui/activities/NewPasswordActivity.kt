@@ -53,7 +53,7 @@ class NewPasswordActivity : AppCompatActivity() {
                                 ).show()
                                 finish()
                             } else {
-                                Log.d("HTTP ERROR", "status code is " + response.code())
+                                println("status code is " + response.code())
                             }
                         }
 
@@ -61,7 +61,8 @@ class NewPasswordActivity : AppCompatActivity() {
                             call: Call<UserService.MessageResponse>,
                             t: Throwable
                         ) {
-                            Log.d("FAIL", "fail")
+                            println("HTTP ERROR")
+                        t.printStackTrace()
                         }
                     }
                 )

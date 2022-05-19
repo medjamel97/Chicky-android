@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import tn.esprit.chicky.R
-import tn.esprit.chicky.models.Comment
+import tn.esprit.chicky.models.Record
 
-class CommentAdapter(var items: MutableList<Comment>) :
-    RecyclerView.Adapter<CommentAdapter.ConversationViewHolder>() {
+class RecordAdapter(var items: MutableList<Record>) :
+    RecyclerView.Adapter<RecordAdapter.ConversationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -26,17 +26,17 @@ class CommentAdapter(var items: MutableList<Comment>) :
     class ConversationViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
 
-        private val conversationNameTV: TextView = itemView.findViewById(R.id.titleTV)
-        private val lastMessageTV: TextView = itemView.findViewById(R.id.descriptionTV)
+        private val titleTV: TextView = itemView.findViewById(R.id.titleTV)
+        private val descriptionTV: TextView = itemView.findViewById(R.id.descriptionTV)
 
-        fun bindView(item: Comment) {
+        fun bindView(item: Record) {
 
             itemView.setOnClickListener {
 
             }
 
-            conversationNameTV.text = "User : " + item.idUser
-            lastMessageTV.text = item.description
+            titleTV.text = "User : " + item.user.firstname + " " + item.user.lastname
+            descriptionTV.text = item.date.toString()
         }
     }
 }

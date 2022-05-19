@@ -1,5 +1,6 @@
 package tn.esprit.chicky.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import tn.esprit.chicky.R
+import tn.esprit.chicky.adapters.ConversationAdapter
+import tn.esprit.chicky.models.Conversation
+import tn.esprit.chicky.models.User
+import tn.esprit.chicky.service.ApiService
+import tn.esprit.chicky.service.ChatService
+import tn.esprit.chicky.utils.Constants
 
 class ChatFragment : Fragment() {
 
@@ -29,20 +40,46 @@ class ChatFragment : Fragment() {
         conversationsRV!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        val sharedPreferences =
+            requireContext().getSharedPreferences(Constants.SHARED_PREF_SESSION, Context.MODE_PRIVATE)
+        val userData = sharedPreferences.getString("USER_DATA", null)
 
-        /*Handler().postDelayed({
-            conversationsRV!!.adapter = ConversationAdapter(
-                listOf(
-                    Conversation("", "Nom 1", "Message 1"),
-                    Conversation("", "Nom 2", "Message 2"),
-                    Conversation("", "Nom 3", "Message 3"),
-                    Conversation("", "Nom 4", "Message 4"),
-                ) as MutableList<Conversation>
+        val user: User? = if (userData != null) {
+            Gson().fromJson(userData, User::class.java)
+        } else {
+            null
+        }
+
+        ApiService.chatService.getMyConversations(
+            ChatService.MyConversationsBody(
+                user!!._id
             )
-            shimmerFrameLayout!!.stopShimmer()
-            shimmerFrameLayout!!.visibility = View.GONE
+        ).enqueue(
+                object : Callback<ChatService.ConversationsResponse> {
+                    override fun onResponse(
+                        call: Call<ChatService.ConversationsResponse>,
+                        response: Response<ChatService.ConversationsResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            conversationsRV!!.adapter =
+                                ConversationAdapter(response.body()?.conversations as MutableList<Conversation>)
 
-        }, 3000)*/
+                            shimmerFrameLayout!!.stopShimmer()
+                            shimmerFrameLayout!!.visibility = View.GONE
+                        } else {
+                            println("status code is " + response.code())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<ChatService.ConversationsResponse>,
+                        t: Throwable
+                    ) {
+                        println("HTTP ERROR")
+                        t.printStackTrace()
+                    }
+                }
+            )
 
         return view
     }

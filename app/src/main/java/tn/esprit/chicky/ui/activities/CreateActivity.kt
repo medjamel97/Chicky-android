@@ -100,7 +100,7 @@ class CreateActivity : AppCompatActivity() {
                         if (response.code() == 200) {
                             finish()
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -108,7 +108,8 @@ class CreateActivity : AppCompatActivity() {
                         call: Call<PostService.PostResponse?>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR")
+                        t.printStackTrace()
                     }
 
                 }

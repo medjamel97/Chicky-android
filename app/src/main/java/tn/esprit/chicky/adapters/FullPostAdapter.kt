@@ -1,4 +1,4 @@
-package tn.esprit.chicky.adapters;
+package tn.esprit.chicky.adapters
 
 import android.content.Context
 import android.net.Uri
@@ -22,9 +22,9 @@ import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.LikeService
 import tn.esprit.chicky.service.PostService
-import tn.esprit.chicky.ui.activities.CommentsModal
+import tn.esprit.chicky.ui.activities.MainActivity
+import tn.esprit.chicky.ui.modals.CommentsModal
 import tn.esprit.chicky.utils.Constants
-import java.time.LocalDateTime
 
 class FullPostAdapter(var items: MutableList<Post>) :
 
@@ -43,7 +43,7 @@ class FullPostAdapter(var items: MutableList<Post>) :
 
     class PostViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
-        val currentTime = LocalDateTime.now()
+
         private val videoView: VideoView = itemView.findViewById(R.id.videoView)
         private val postTitleTV: TextView = itemView.findViewById(R.id.postTitleTV)
         private val postDescriptionTV: TextView = itemView.findViewById(R.id.postDescriptionTV)
@@ -55,10 +55,6 @@ class FullPostAdapter(var items: MutableList<Post>) :
         private val commentsButton: ImageButton = itemView.findViewById(R.id.commentsButton)
 
         fun bindView(post: Post) {
-
-            itemView.setOnClickListener {
-
-            }
 
             videoView.setVideoURI(Uri.parse(Constants.BASE_URL_VIDEOS + post.videoFilename))
             videoView.setOnPreparedListener { mp ->
@@ -90,16 +86,16 @@ class FullPostAdapter(var items: MutableList<Post>) :
                                     .show()
                             } else {
                                 Log.d("BODY", "id code is " + post._id)
-                                Log.d("HTTP ERROR", "status code is " + response.code())
+                                println("status code is " + response.code())
                             }
                         }
-
 
                         override fun onFailure(
                             call: Call<PostService.MessageResponse?>,
                             t: Throwable
                         ) {
-                            Log.d("FAIL", "fail")
+                            println("HTTP ERROR")
+                            t.printStackTrace()
                         }
 
                     }
@@ -124,7 +120,7 @@ class FullPostAdapter(var items: MutableList<Post>) :
             }
 
             for (like in post.likes) {
-                if (like.user!!._id == userData) {
+                if (like.idUser == user!!._id) {
                     likeButton.setImageResource(R.drawable.ic_favorite)
                     userHasLike = true
                 }
@@ -163,10 +159,10 @@ class FullPostAdapter(var items: MutableList<Post>) :
                     }
                 })
             }
+
             commentsButton.setOnClickListener {
-                CommentsModal().apply {
-                    show(activity!!.supportFragmentManager, CommentsModal.TAG)
-                }
+                val commentsModal = CommentsModal().newInstance(post)
+                commentsModal.show((itemView.context as? MainActivity)!!.supportFragmentManager, CommentsModal.TAG)
             }
         }
     }

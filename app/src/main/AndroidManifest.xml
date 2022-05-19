@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activities.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.EditProfileActivity"
             android:exported="true" />
         <activity
@@ -48,7 +51,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="myapp"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -58,7 +69,6 @@
         <activity
             android:name=".ui.activities.PostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
     </application>
 
 </manifest>

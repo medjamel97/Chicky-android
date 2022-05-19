@@ -1,5 +1,6 @@
 package tn.esprit.chicky.adapters;
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,11 @@ import retrofit2.Response
 import tn.esprit.chicky.R
 import tn.esprit.chicky.models.Conversation
 import tn.esprit.chicky.service.ApiService
-import tn.esprit.chicky.service.ConversationService
+import tn.esprit.chicky.service.ChatService
+import tn.esprit.chicky.ui.activities.ChatActivity
+import tn.esprit.chicky.ui.activities.PostActivity
+import tn.esprit.chicky.utils.Constants
+import tn.esprit.chicky.utils.ImageLoader
 
 class ConversationAdapter(var items: MutableList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder>() {
@@ -35,27 +40,32 @@ class ConversationAdapter(var items: MutableList<Conversation>) :
         RecyclerView.ViewHolder(view) {
 
         private val profilePictureIV: ImageView = itemView.findViewById(R.id.profilePictureIV)
-        private val conversationNameTV: TextView = itemView.findViewById(R.id.conversationNameTV)
-        private val lastMessageTV: TextView = itemView.findViewById(R.id.lastMessageTV)
+        private val conversationNameTV: TextView = itemView.findViewById(R.id.titleTV)
+        private val lastMessageTV: TextView = itemView.findViewById(R.id.descriptionTV)
         private val deleteConversationButton: TextView =
             itemView.findViewById(R.id.deleteConversationButton)
 
-        fun bindView(item: Conversation) {
+        fun bindView(conversation: Conversation) {
 
             itemView.setOnClickListener {
-
+                val intent = Intent(itemView.context, ChatActivity::class.java)
+                intent.putExtra("conversation", conversation)
+                itemView.context.startActivity(intent)
             }
 
-            //profilePictureIV. = item.
-            conversationNameTV.text = item.name
-            lastMessageTV.text = item.lastMessage
+            ImageLoader.setImageFromUrlWithoutProgress(
+                profilePictureIV,
+                Constants.BASE_URL_IMAGES + conversation.receiver!!.imageFilename
+            )
+            conversationNameTV.text = conversation.receiver!!.firstname + " " + conversation.receiver.firstname
+            lastMessageTV.text = conversation.lastMessage
 
             deleteConversationButton.setOnClickListener {
-                ApiService.conversationService.deleteConversation(item._id)?.enqueue(
-                    object : Callback<ConversationService.MessageResponse?> {
+                ApiService.chatService.deleteConversation(conversation._id)?.enqueue(
+                    object : Callback<ChatService.MessageResponse?> {
                         override fun onResponse(
-                            call: Call<ConversationService.MessageResponse?>,
-                            response: Response<ConversationService.MessageResponse?>
+                            call: Call<ChatService.MessageResponse?>,
+                            response: Response<ChatService.MessageResponse?>
                         ) {
                             if (response.code() == 200) {
                                 Snackbar.make(
@@ -65,18 +75,18 @@ class ConversationAdapter(var items: MutableList<Conversation>) :
                                 )
                                     .show()
                             } else {
-                                Log.d("BODY", "id code is " + item._id)
-                                Log.d("HTTP ERROR", "status code is " + response.code())
+                                Log.d("BODY", "id code is " + conversation._id)
+                                println("status code is " + response.code())
                             }
                         }
 
                         override fun onFailure(
-                            call: Call<ConversationService.MessageResponse?>,
+                            call: Call<ChatService.MessageResponse?>,
                             t: Throwable
                         ) {
-                            Log.d("FAIL", "fail")
+                            println("HTTP ERROR")
+                            t.printStackTrace()
                         }
-
                     }
                 )
             }

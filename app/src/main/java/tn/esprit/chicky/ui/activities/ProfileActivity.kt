@@ -3,13 +3,9 @@ package tn.esprit.chicky.ui.activities
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Button
-import android.widget.GridView
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -17,8 +13,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tn.esprit.chicky.R
+import tn.esprit.chicky.adapters.PostsGridAdapter
+import tn.esprit.chicky.models.Post
 import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
+import tn.esprit.chicky.service.ChatService
 import tn.esprit.chicky.service.PostService
 import tn.esprit.chicky.utils.Constants
 import tn.esprit.chicky.utils.ImageLoader
@@ -56,8 +55,46 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         if (currentUser != sessionUser) {
-            btnlogout!!.visibility = View.GONE
-            btndelete!!.visibility = View.GONE
+            btnlogout!!.text = "Block"
+            btnlogout!!.setOnClickListener {
+                Toast.makeText(applicationContext, "Feature coming soon", Toast.LENGTH_SHORT).show()
+            }
+            btndelete!!.text = "Contact"
+            btndelete!!.setOnClickListener {
+                ApiService.chatService.creerNouvelleConversation(
+                    ChatService.ConversationBody(
+                        sessionUser!!._id,
+                        currentUser!!._id
+                    )
+                ).enqueue(
+                    object : Callback<ChatService.MessageResponse> {
+                        override fun onResponse(
+                            call: Call<ChatService.MessageResponse>,
+                            response: Response<ChatService.MessageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                finish()
+                            } else {
+                                println("status code is " + response.code())
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<ChatService.MessageResponse>,
+                            t: Throwable
+                        ) {
+                            println("HTTP ERROR : ")
+                        }
+                    }
+                )
+            }
+        } else {
+            btndelete!!.setOnClickListener {
+                val intent =
+                    Intent(this@ProfileActivity, EditProfileActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         fullName!!.text = currentUser!!.firstname + " " + currentUser!!.lastname
@@ -81,13 +118,6 @@ class ProfileActivity : AppCompatActivity() {
             builder.create().show()
         }
 
-        btndelete!!.setOnClickListener {
-            val intent =
-                Intent(this@ProfileActivity, EditProfileActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         getMyPosts()
     }
 
@@ -100,12 +130,20 @@ class ProfileActivity : AppCompatActivity() {
                         response: Response<PostService.PostsResponse>
                     ) {
                         if (response.code() == 200) {
-                            /*postsGV!!.adapter = `GridViewAdapter.old`(
+                            val list: MutableList<Post> = emptyList<Post>().toMutableList()
+
+                            for (post in response.body()?.posts as MutableList<Post>) {
+                                if (post.user?._id == currentUser?._id) {
+                                    list.add(post)
+                                }
+                            }
+
+                            postsGV!!.adapter = PostsGridAdapter(
                                 applicationContext,
-                                response.body()?.posts as MutableList<Post>
-                            )*/
+                                list
+                            )
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -113,7 +151,7 @@ class ProfileActivity : AppCompatActivity() {
                         call: Call<PostService.PostsResponse>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR : ")
                     }
                 }
             )

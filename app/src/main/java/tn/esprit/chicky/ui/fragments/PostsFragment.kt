@@ -49,7 +49,7 @@ class PostsFragment : Fragment() {
                             postsSL!!.stopShimmer()
                             postsSL!!.visibility = View.GONE
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -57,7 +57,8 @@ class PostsFragment : Fragment() {
                         call: Call<PostService.PostsResponse>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR")
+                        t.printStackTrace()
                     }
 
                 }

@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:backgroundTint="@color/dark"
+    android:elevation="30dp"
     app:cardCornerRadius="20dp">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <VideoView
             android:id="@+id/videoView"
@@ -115,6 +115,7 @@
                 android:id="@+id/likeCountTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/_0" />
 
             <ImageButton

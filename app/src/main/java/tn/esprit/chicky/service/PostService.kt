@@ -35,9 +35,6 @@ interface PostService {
         val idPost: String,
     )
 
-
-    data class PostBody(val title: String, val description: String)
-
     @Multipart
     @POST("/post")
     fun addPost(

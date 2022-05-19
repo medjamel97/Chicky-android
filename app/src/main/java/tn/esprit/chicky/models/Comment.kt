@@ -5,8 +5,9 @@ import java.util.*
 
 data class Comment(
     var date: Date,
-    var user: String?,
-    var userEmail: String?,
-    var post: String?,
-    var description: String?
+    var description: String?,
+    var idPost: String?,
+    var idUser: String?
+    //var username: String?,
+    //var userPhoto: String?,
 ) : Serializable

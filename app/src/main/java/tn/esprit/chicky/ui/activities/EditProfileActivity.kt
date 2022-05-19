@@ -84,7 +84,7 @@ class EditProfileActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -92,7 +92,9 @@ class EditProfileActivity : AppCompatActivity() {
                         call: Call<UserService.UserResponse>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR")
+                        t.printStackTrace()
+                        t.printStackTrace()
                     }
                 }
             )

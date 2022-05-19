@@ -26,8 +26,8 @@ object ApiService {
         retrofit().create(MusicService::class.java)
     }
 
-    val conversationService: ConversationService by lazy {
-        retrofit().create(ConversationService::class.java)
+    val chatService: ChatService by lazy {
+        retrofit().create(ChatService::class.java)
     }
 
     val likeService: LikeService by lazy {
@@ -36,6 +36,10 @@ object ApiService {
 
     val commentService: CommentService by lazy {
         retrofit().create(CommentService::class.java)
+    }
+
+    val recordService: RecordService by lazy {
+        retrofit().create(RecordService::class.java)
     }
 
 }

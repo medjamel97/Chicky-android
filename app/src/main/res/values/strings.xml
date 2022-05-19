@@ -46,4 +46,8 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="_0">0</string>
+    <string name="my_location">My location</string>
+    <string name="location">location</string>
+    <string name="people_in_this_place">People in this place :</string>
+    <string name="add_comment">Add comment</string>
 </resources>

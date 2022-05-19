@@ -66,7 +66,7 @@ class SearchFragment : Fragment() {
                             postsSL!!.stopShimmer()
                             postsSL!!.visibility = View.GONE
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -74,7 +74,8 @@ class SearchFragment : Fragment() {
                         call: Call<PostService.PostsResponse>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR")
+                        t.printStackTrace()
                     }
 
                 }
@@ -96,7 +97,7 @@ class SearchFragment : Fragment() {
                             peopleSL!!.stopShimmer()
                             peopleSL!!.visibility = View.GONE
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -104,7 +105,8 @@ class SearchFragment : Fragment() {
                         call: Call<UserService.UsersResponse>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR")
+                        t.printStackTrace()
                     }
 
                 }
@@ -126,7 +128,7 @@ class SearchFragment : Fragment() {
                             musicSL!!.stopShimmer()
                             musicSL!!.visibility = View.GONE
                         } else {
-                            Log.d("HTTP ERROR", "status code is " + response.code())
+                            println("status code is " + response.code())
                         }
                     }
 
@@ -134,7 +136,8 @@ class SearchFragment : Fragment() {
                         call: Call<MusicService.MusicsResponse>,
                         t: Throwable
                     ) {
-                        Log.d("FAIL", "fail")
+                        println("HTTP ERROR")
+                        t.printStackTrace()
                     }
 
                 }

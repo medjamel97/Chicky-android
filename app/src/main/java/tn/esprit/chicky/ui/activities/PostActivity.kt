@@ -86,7 +86,7 @@ class PostActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Post Deleted", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("BODY", "id code is $_id")
-                        Log.d("HTTP ERROR", "status code is " + response.code())
+                        println("status code is " + response.code())
                     }
                 }
 
@@ -94,7 +94,8 @@ class PostActivity : AppCompatActivity() {
                     call: Call<PostService.MessageResponse?>,
                     t: Throwable
                 ) {
-                    Log.d("FAIL", "fail")
+                    println("HTTP ERROR")
+                        t.printStackTrace()
                 }
 
             }

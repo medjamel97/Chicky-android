@@ -47,7 +47,7 @@
         android:layout_margin="10dp"
         android:gravity="bottom"
         android:text="@string/title"
-        android:textColor="@color/backgroundClear"
+        android:textColor="@color/white"
         android:textSize="15sp" />
 
 

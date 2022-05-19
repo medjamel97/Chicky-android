@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        Log.d("HTTP ERROR", "status code is " + response.code())
+                        println("status code is " + response.code())
                     }
                 }
 
@@ -91,7 +91,8 @@ class LoginActivity : AppCompatActivity() {
                     call: Call<UserService.UserResponse>,
                     t: Throwable
                 ) {
-                    Log.d("FAIL", "fail")
+                    println("HTTP ERROR")
+                        t.printStackTrace()
                 }
             }
         )

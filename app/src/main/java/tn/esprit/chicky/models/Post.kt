@@ -1,5 +1,6 @@
 package tn.esprit.chicky.models
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Post(
@@ -7,7 +8,11 @@ data class Post(
     val title: String,
     val description: String,
     val videoFilename: String,
+
+    @SerializedName("user")
     val user: User?,
+    @SerializedName("likes")
     val likes: List<Like>?,
+    @SerializedName("comments")
     val comments: List<Comment>?
 ) : Serializable
