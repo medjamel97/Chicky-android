@@ -33,11 +33,9 @@ class ProfileActivity : AppCompatActivity() {
     private var fullName: TextView? = null
     private var email: TextView? = null
     private var btnlogout: Button? = null
-    private var btnqr: Button? = null
     private var btndelete: Button? = null
     private var postsGV: GridView? = null
     private var profileIV: ImageView? = null
-    private var qrimage: ImageView? = null
 
     private var currentUser: User? = null
 
@@ -47,15 +45,24 @@ class ProfileActivity : AppCompatActivity() {
 
         fullName = findViewById(R.id.fullName)
         email = findViewById(R.id.email)
-        btnqr = findViewById(R.id.btnqr)
         btnlogout = findViewById(R.id.btnlogout)
         btndelete = findViewById(R.id.delete)
         postsGV = findViewById(R.id.postsGV)
         profileIV = findViewById(R.id.profileIV)
-        qrimage = findViewById(R.id.qrimage)
 
         println(intent.dataString)
         val qrUserId  = intent.dataString
+
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
+        val userData = sharedPreferences.getString("USER_DATA", null)
+
+        val sessionUser: User? = Gson().fromJson(userData, User::class.java)
+        currentUser = intent.getSerializableExtra("user") as User?
+
+        if (currentUser == null) {
+            currentUser = sessionUser
+        }
+
         if (qrUserId != null) {
             qrUserId.replace("chicky://","")
 
@@ -73,7 +80,7 @@ class ProfileActivity : AppCompatActivity() {
                         response: Response<UserService.UserResponse>
                     ) {
                         if (response.code() == 200) {
-
+                            currentUser = response.body()?.user
                         } else {
                             Log.d("HTTP ERROR", "status code is " + response.code())
                         }
@@ -87,16 +94,6 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
             )
-        }
-
-        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
-        val userData = sharedPreferences.getString("USER_DATA", null)
-
-        val sessionUser: User? = Gson().fromJson(userData, User::class.java)
-        currentUser = intent.getSerializableExtra("user") as User?
-
-        if (currentUser == null) {
-            currentUser = sessionUser
         }
 
         if (currentUser != sessionUser) {
@@ -163,9 +160,6 @@ class ProfileActivity : AppCompatActivity() {
             builder.create().show()
         }
 
-        btnqr!!.setOnClickListener{
-            qrimage!!.setImageBitmap(getQrCodeBitmap())
-        }
 
 
         btndelete!!.setOnClickListener {

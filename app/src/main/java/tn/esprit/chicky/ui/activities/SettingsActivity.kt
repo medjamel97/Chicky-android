@@ -31,7 +31,8 @@ class SettingsActivity : AppCompatActivity(),PaymentResultListener {
     var btnqr: Button? = null
     var btPay: Button? = null
     var qrimage: ImageView? = null
-    private var currentUser: User? = null
+    var sessionUser:User? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -44,12 +45,8 @@ class SettingsActivity : AppCompatActivity(),PaymentResultListener {
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
         val userData = sharedPreferences.getString("USER_DATA", null)
 
-        val sessionUser: User? = Gson().fromJson(userData, User::class.java)
-        currentUser = intent.getSerializableExtra("user") as User?
+         sessionUser = Gson().fromJson(userData, User::class.java)
 
-        if (currentUser == null) {
-            currentUser = sessionUser
-        }
 
 
 
@@ -84,7 +81,7 @@ class SettingsActivity : AppCompatActivity(),PaymentResultListener {
     fun getQrCodeBitmap(): Bitmap {
         val size = 512 //pixels
         val i = packageManager.getLaunchIntentForPackage("tn.esprit.chicky")
-        val qrCodeContent = "chicky://"+currentUser!!._id
+        val qrCodeContent = "chicky://"+sessionUser!!._id
         val hints = hashMapOf<EncodeHintType, Int>().also { it[EncodeHintType.MARGIN] = 1 } // Make the QR code buffer border narrower
         val bits = QRCodeWriter().encode(qrCodeContent, BarcodeFormat.QR_CODE, size, size)
         return Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565).also {
