@@ -2,6 +2,8 @@ package tn.esprit.chicky.ui.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -9,6 +11,9 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.qrcode.QRCodeWriter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +24,7 @@ import tn.esprit.chicky.models.User
 import tn.esprit.chicky.service.ApiService
 import tn.esprit.chicky.service.ChatService
 import tn.esprit.chicky.service.PostService
+import tn.esprit.chicky.service.UserService
 import tn.esprit.chicky.utils.Constants
 import tn.esprit.chicky.utils.ImageLoader
 
@@ -27,9 +33,11 @@ class ProfileActivity : AppCompatActivity() {
     var fullName: TextView? = null
     var email: TextView? = null
     var btnlogout: Button? = null
+    var btnqr: Button? = null
     var btndelete: Button? = null
     var postsGV: GridView? = null
     var profileIV: ImageView? = null
+    var qrimage: ImageView? = null
 
     private var currentUser: User? = null
 
@@ -37,12 +45,50 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+
+
+
+
+
         fullName = findViewById(R.id.fullName)
         email = findViewById(R.id.email)
+        btnqr = findViewById(R.id.btnqr)
         btnlogout = findViewById(R.id.btnlogout)
         btndelete = findViewById(R.id.delete)
         postsGV = findViewById(R.id.postsGV)
         profileIV = findViewById(R.id.profileIV)
+        qrimage = findViewById(R.id.qrimage)
+
+        println(intent.dataString)
+        val intentt  = intent.dataString
+        intentt!!.replace("chicky://","")
+        if (intentt!! != null) {
+            ApiService.userService.getUser(
+                UserService.OneUserBody(
+                   intentt!!
+                )
+            ).enqueue(
+                object : Callback<UserService.UserResponse> {
+                    override fun onResponse(
+                        call: Call<UserService.UserResponse>,
+                        response: Response<UserService.UserResponse>
+                    ) {
+                        if (response.code() == 200) {
+                          
+                        } else {
+                            Log.d("HTTP ERROR", "status code is " + response.code())
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<UserService.UserResponse>,
+                        t: Throwable
+                    ) {
+                        Log.d("FAIL", "fail")
+                    }
+                }
+            )
+        }
 
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)
         val userData = sharedPreferences.getString("USER_DATA", null)
@@ -118,8 +164,39 @@ class ProfileActivity : AppCompatActivity() {
             builder.create().show()
         }
 
+        btnqr!!.setOnClickListener{
+            qrimage!!.setImageBitmap(getQrCodeBitmap())
+        }
+
+
+        btndelete!!.setOnClickListener {
+            val intent =
+                Intent(this@ProfileActivity, EditProfileActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         getMyPosts()
     }
+
+
+
+    fun getQrCodeBitmap(): Bitmap {
+        val size = 512 //pixels
+        val i = packageManager.getLaunchIntentForPackage("tn.esprit.chicky")
+        val qrCodeContent = "www.facebook.com"
+        val hints = hashMapOf<EncodeHintType, Int>().also { it[EncodeHintType.MARGIN] = 1 } // Make the QR code buffer border narrower
+        val bits = QRCodeWriter().encode(qrCodeContent, BarcodeFormat.QR_CODE, size, size)
+        return Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565).also {
+            for (x in 0 until size) {
+                for (y in 0 until size) {
+                    it.setPixel(x, y, if (bits[x, y]) Color.BLACK else Color.WHITE)
+                }
+            }
+        }
+    }
+
+
 
     private fun getMyPosts() {
         ApiService.postService.getPosts()
@@ -156,6 +233,8 @@ class ProfileActivity : AppCompatActivity() {
                 }
             )
     }
+
+
 
     private fun logout() {
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SESSION, MODE_PRIVATE)

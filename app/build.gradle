@@ -91,4 +91,6 @@ dependencies {
     //google signin
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
+    //qrcode
+    implementation 'com.google.zxing:core:3.4.0'
 }
