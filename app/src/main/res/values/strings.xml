@@ -50,4 +50,6 @@
     <string name="location">location</string>
     <string name="people_in_this_place">People in this place :</string>
     <string name="add_comment">Add comment</string>
+    <string name="comment">Comment</string>
+    <string name="new_message">New message</string>
 </resources>

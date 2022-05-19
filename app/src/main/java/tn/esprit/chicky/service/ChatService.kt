@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.*
 import tn.esprit.chicky.models.Conversation
+import tn.esprit.chicky.models.Message
+import tn.esprit.chicky.models.MessageWithoutPopulate
 
 
 interface ChatService {
@@ -23,24 +25,34 @@ interface ChatService {
         val message: String
     )
 
+    data class MessagesResponse(
+        @SerializedName("messages")
+        val messages: List<MessageWithoutPopulate>
+    )
+
     data class ConversationBody(val sender: String, val receiver: String)
+
+    data class OneConversationBody(val conversation: String)
 
     data class MyConversationsBody(val sender: String)
 
-    @GET("/chat/tout-messages")
-    fun getAllMessages(): Call<ConversationsResponse>
+    data class MessageBody(
+        val description: String,
+        val sender: String,
+        val receiver: String
+    )
 
     @POST("/chat/my-conversations")
     fun getMyConversations(@Body myConversationsBody: MyConversationsBody): Call<ConversationsResponse>
 
     @POST("/chat/my-messages")
-    fun getMyMessages(): Call<ConversationsResponse>
+    fun getMyMessages(@Body oneConversationBody: OneConversationBody): Call<MessagesResponse>
 
     @POST("/chat/creer-conversation")
     fun creerNouvelleConversation(@Body conversationBody: ConversationBody): Call<MessageResponse>
 
     @POST("/chat/envoyer-message")
-    fun envoyerMessage(): Call<ConversationsResponse>
+    fun envoyerMessage(@Body messageBody: MessageBody): Call<MessageResponse>
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/", hasBody = true)

@@ -56,7 +56,7 @@ class ConversationAdapter(var items: MutableList<Conversation>) :
                 profilePictureIV,
                 Constants.BASE_URL_IMAGES + conversation.receiver!!.imageFilename
             )
-            conversationNameTV.text = conversation.receiver!!.firstname + " " + conversation.receiver.firstname
+            conversationNameTV.text = conversation.receiver.firstname + " " + conversation.receiver.firstname
             lastMessageTV.text = conversation.lastMessage
 
             deleteConversationButton.setOnClickListener {
