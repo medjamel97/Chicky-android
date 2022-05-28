@@ -14,15 +14,14 @@
 
         <ImageView
             android:id="@+id/profilePictureIV"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:contentDescription="@string/todo"
             android:src="@drawable/ic_person"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <TextView
             android:id="@+id/userNameTV"
@@ -34,11 +33,12 @@
             android:layout_marginEnd="12dp"
             android:text="@string/description"
             android:textColor="@color/textPrimary"
-            android:textSize="25sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profilePictureIV"
             app:layout_constraintTop_toTopOf="parent" />
+
     </LinearLayout>
 
 
@@ -56,7 +56,7 @@
             android:layout_marginVertical="5dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:textSize="30sp"
+            android:textSize="18sp"
             android:text="@string/description"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

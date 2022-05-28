@@ -8,5 +8,5 @@ data class Record(
     var longitude: Double,
     var lattitude: Double,
     var date: Date,
-    var user: User
+    var user: User?
 ) : Serializable

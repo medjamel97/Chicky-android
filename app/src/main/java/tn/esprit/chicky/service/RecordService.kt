@@ -19,6 +19,10 @@ interface RecordService {
         val records: List<Record>
     )
 
+    data class NameBody(
+        val locationName: String
+    )
+
     data class RecordBody(
         val idUser: String,
         val longitude: Double,
@@ -26,8 +30,8 @@ interface RecordService {
         val locationName: String
     )
 
-    @GET("/record")
-    fun getAll(): Call<RecordsResponse>
+    @POST("/record/get-by-location")
+    fun getByLocation(@Body nameBody:NameBody): Call<RecordsResponse>
 
     @POST("/record/add-or-update")
     fun addOrUpdate(@Body recordBody: RecordBody): Call<RecordResponse>

@@ -35,7 +35,7 @@ class RecordAdapter(var items: MutableList<Record>) :
 
             }
 
-            titleTV.text = "User : " + item.user.firstname + " " + item.user.lastname
+            titleTV.text = "User : " + item.user!!.firstname + " " + item.user!!.lastname
             descriptionTV.text = item.date.toString()
         }
     }

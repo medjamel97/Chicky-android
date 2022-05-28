@@ -31,11 +31,16 @@ class SocialModal : BottomSheetDialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.modal_social, container, false)
 
+        val locationName: String? = requireActivity().intent.getStringExtra("locationName")
         recordsRV = view.findViewById(R.id.recordsRV)
         recordsRV!!.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
 
-        ApiService.recordService.getAll().enqueue(object : Callback<RecordService.RecordsResponse> {
+        ApiService.recordService.getByLocation(
+            RecordService.NameBody(
+                locationName!!
+            )
+        ).enqueue(object : Callback<RecordService.RecordsResponse> {
             override fun onResponse(
                 call: Call<RecordService.RecordsResponse>,
                 response: Response<RecordService.RecordsResponse>

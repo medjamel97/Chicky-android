@@ -82,7 +82,6 @@ class ChatActivity : AppCompatActivity() {
                 }
             })
         }
-
     }
 
     private fun getData() {
@@ -114,7 +113,6 @@ class ChatActivity : AppCompatActivity() {
                     println("HTTP ERROR")
                     t.printStackTrace()
                 }
-
             }
         )
     }
@@ -131,7 +129,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    fun stopUpdates() {
+    private fun stopUpdates() {
         job?.cancel()
         job = null
     }

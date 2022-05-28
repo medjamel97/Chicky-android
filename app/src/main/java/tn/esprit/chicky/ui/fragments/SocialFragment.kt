@@ -30,6 +30,9 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -106,40 +109,45 @@ class SocialFragment : Fragment() {
     private fun addAnnotationToMap(long: Double, lat: Double, locationName: String, isCoffee: Boolean) {
         val annotationApi = mapView?.annotations
         val pointAnnotationManager = annotationApi?.createPointAnnotationManager()
-        val iconBitmap: Bitmap
-        iconBitmap = if (isCoffee) {
-            bitmapFromDrawableRes(requireContext(), R.drawable.ic_local_cafe)!!
-        } else {
-            bitmapFromDrawableRes(requireContext(), R.drawable.ic_building)!!
-        }
-        val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-            .withPoint(Point.fromLngLat(long, lat))
-            .withIconImage(iconBitmap)
-        val pointAnnotation = pointAnnotationManager?.create(pointAnnotationOptions)
 
-        val viewAnnotation: View = mapView!!.viewAnnotationManager.addViewAnnotation(
-            resId = R.layout.item_callout_view,
-            options = viewAnnotationOptions {
-                geometry(Point.fromLngLat(long, lat))
-                anchor(ViewAnnotationAnchor.BOTTOM)
-                offsetY((pointAnnotation!!.iconImageBitmap?.height!!).toInt())
+        val pointAnnotationOptions = PointAnnotationOptions()
+        try {
+            val iconBitmap: Bitmap = if (isCoffee) {
+                bitmapFromDrawableRes(requireContext(), R.drawable.ic_local_cafe)!!
+            } else {
+                bitmapFromDrawableRes(requireContext(), R.drawable.ic_building)!!
             }
-        )
+            pointAnnotationOptions.withIconImage(iconBitmap)
+            pointAnnotationOptions.withPoint(Point.fromLngLat(long, lat))
 
-        pointAnnotationManager!!.addClickListener { clickedAnnotation ->
-            if (pointAnnotation == clickedAnnotation) {
-                viewAnnotation.toggleViewVisibility()
+            val pointAnnotation = pointAnnotationManager?.create(pointAnnotationOptions)
+
+            val viewAnnotation: View = mapView!!.viewAnnotationManager.addViewAnnotation(
+                resId = R.layout.item_callout_view,
+                options = viewAnnotationOptions {
+                    geometry(Point.fromLngLat(long, lat))
+                    anchor(ViewAnnotationAnchor.BOTTOM)
+                    offsetY((pointAnnotation!!.iconImageBitmap?.height!!).toInt())
+                }
+            )
+
+            pointAnnotationManager!!.addClickListener { clickedAnnotation ->
+                if (pointAnnotation == clickedAnnotation) {
+                    viewAnnotation.toggleViewVisibility()
+                }
+                true
             }
-            true
-        }
 
-        ItemCalloutViewBinding.bind(viewAnnotation).apply {
-            showLocationButton.text = locationName
-            showLocationButton.setOnClickListener {
-                SocialModal().apply {
-                    show(parentActivity!!.supportFragmentManager, SocialModal.TAG)
+            ItemCalloutViewBinding.bind(viewAnnotation).apply {
+                showLocationButton.text = locationName
+                showLocationButton.setOnClickListener {
+                    SocialModal().apply {
+                        show(parentActivity!!.supportFragmentManager, SocialModal.TAG)
+                    }
                 }
             }
+        } catch (e: Exception) {
+            println("Context exception")
         }
 
         // SAVE DATA TO DATABASE
@@ -234,12 +242,16 @@ class SocialFragment : Fragment() {
                 setCameraPosition(currentLocation.longitude(), currentLocation.latitude(), 35.0)
                 println("Current location : " + currentLocation.longitude() + ":" + currentLocation.latitude())
 
-                // Brown Sugar
-                addAnnotationToMap(10.1856296, 36.9019827, "Brown Sugar", true)
-                // Café Dana
-                addAnnotationToMap(10.1883177, 36.9017825, "Café Dana", true)
-                // Esprit
-                addAnnotationToMap(10.190196, 36.8998452, "Esprit", false)
+                MainScope().launch {
+                    delay(2500)
+
+                    // Brown Sugar
+                    addAnnotationToMap(10.1856296, 36.9019827, "Brown Sugar", true)
+                    // Café Dana
+                    addAnnotationToMap(10.1883177, 36.9017825, "Café Dana", true)
+                    // Esprit
+                    addAnnotationToMap(10.190196, 36.8998452, "Esprit", false)
+                }
             }
         }
 
