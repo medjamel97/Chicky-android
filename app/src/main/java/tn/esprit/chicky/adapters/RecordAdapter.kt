@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import tn.esprit.chicky.R
 import tn.esprit.chicky.models.Record
+import java.text.SimpleDateFormat
 
 class RecordAdapter(var items: MutableList<Record>) :
     RecyclerView.Adapter<RecordAdapter.ConversationViewHolder>() {
@@ -35,8 +36,9 @@ class RecordAdapter(var items: MutableList<Record>) :
 
             }
 
-            titleTV.text = "User : " + item.user!!.firstname + " " + item.user!!.lastname
-            descriptionTV.text = item.date.toString()
+            titleTV.text = item.user!!.firstname + " " + item.user!!.lastname
+            descriptionTV.text =
+                "Was here at : " + SimpleDateFormat("dd-MM-yyyy HH:MM").format(item.date)
         }
     }
 }
